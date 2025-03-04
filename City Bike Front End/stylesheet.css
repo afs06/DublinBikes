@@ -1,0 +1,176 @@
+/* Using vmin generally to create responsive elements on HTML */
+
+body {
+    
+    background-color:rgb(230, 243, 248);
+}
+
+.responsive {
+    max-width: 70px;
+    margin-top: 5px;
+    height: 5vmin;
+
+
+
+}
+.title {
+    font-family: 'Anuphan', sans-serif;
+    color: rgba(0, 121, 252, 0.897);
+    font-weight: 300;
+    max-width: 100%;
+    font-size: 4vmin;  
+    padding-bottom: 1px;
+    letter-spacing: -2px;    
+    position: absolute;
+    left: 7.0vmin;
+    top: 3.7vmin; 
+    
+    
+}
+html, body{
+    margin:0;
+}
+
+
+h1 {
+    border-bottom: 1px solid;
+    color: rgba(0, 121, 252, 0.897);
+    width: 100%;
+    margin-top: 0;
+    /*background-color: rgba(155, 199, 218, 0.336);*/ /* saving for later */
+    background-color:rgb(230, 243, 248);
+    height: 12vmin;
+    display: flex; 
+    position: relative;
+    align-items: center; 
+
+}
+#bike{
+    padding-left: 2vmin;
+    padding-bottom: 2vmin;
+
+}
+
+
+#map {
+    height: 80vmin;
+    width: 70%;
+    border: 1px solid;
+    border-radius: 25px;
+    color: rgba(0, 121, 252, 0.897);
+    float: right;
+    margin-right: 1vmin;
+    display: block;  
+    background-color:rgb(230, 243, 248);
+    position: relative;
+    
+}
+
+button.defMag {
+    position: absolute;
+    bottom: 2vmin;  
+    right: 3vmin; 
+    background-color: transparent;
+    outline:none;
+    border: none;
+    padding: 1px;
+    cursor: pointer;
+    z-index: 1000;
+    height: 6vmin;
+    width: 6vmin;
+
+}
+
+button.defMag img {
+    max-width: 100%; 
+    max-height: 100%; 
+}
+
+#container{
+    width: 100%;
+    min-height: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+#sidebar {
+    border: 1px solid;
+    height: 80vmin;
+    width: 26%;
+    border-radius: 25px;
+    margin-left: 1vmin;
+    float: left;
+    color: rgba(0, 121, 252, 0.897);
+    background-color: rgba(202, 225, 235, 0.918);
+
+}
+
+#search1 {
+    border: 1px solid;
+    color: rgba(0, 121, 252, 0.897);
+    background-color:rgb(230, 243, 248);
+    font-family: 'Anuphan', sans-serif;
+    font-size: 3vmin;
+    border-radius: 15px;
+    margin-top: 20vmin;
+    height: 10%;
+    width: 80%;
+    text-overflow: ellipsis;
+    
+
+}
+
+#search2 {
+    border: 1px solid;
+    color: rgba(0, 121, 252, 0.897);
+    background-color:rgb(230, 243, 248);
+    font-family: 'Anuphan', sans-serif;
+    font-size: 3vmin;
+    border-radius: 15px;
+    margin-top: 5vmin;
+    height: 10%;
+    width: 80%;
+    text-overflow: ellipsis;
+
+}
+
+#book {
+    background-color: rgba(0, 121, 252, 0.897);
+    font-family: 'Anuphan', sans-serif;
+    font-size: 3vmin;
+    border-radius: 5px;
+    color: aliceblue;
+    border: transparent;
+    margin-top: 3vmin;
+    cursor: pointer;
+    width: 15vmin;
+    height: 5vmin;
+    white-space: nowrap;
+    text-overflow: clip;
+
+}
+
+#login {
+    background-color: rgba(0, 121, 252, 0.897);
+    font-family: 'Anuphan', sans-serif;
+    font-size: 3vmin;
+    border-radius: 5px;
+    color: aliceblue;
+    border: transparent;
+    cursor: pointer;
+    width: 15vmin;
+    height: 5vmin;
+    position: absolute;
+    top: 3vmin;
+    right: 1vmin;
+}
+
+.weather {
+    color: rgba(0, 121, 252, 0.897);
+    font-family: 'Anuphan', sans-serif;
+    font-size: 3vmin;
+    font-weight: 100;    
+    padding-left: 10vmin;
+}
+
+
