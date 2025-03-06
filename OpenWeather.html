@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Weather</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Current Weather in Dublin, Ireland</h1>
+    <div id="weather">Loading weather data...</div>
+
+    <script>
+        function fetchWeather() {
+            fetch("http://127.0.0.1:5000/weather")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("API Response Data:", data);  // For debugging
+
+                    if (data.main && data.weather && data.weather.length > 0) {
+                        let temp = data.main.temp;
+                        let description = data.weather[0].description;
+                        let location = data.name + ", " + data.sys.country;
+                        document.getElementById("weather").innerText = 
+                            `📍 Location: ${location} | 🌡 Temperature: ${temp}°C | ☁️ Weather: ${description}`;
+                    } else {
+                        document.getElementById("weather").innerText = "⚠️ Unable to retrieve complete weather data";
+                    }
+                })
+                .catch(error => {
+                    console.error("Weather fetch failed:", error);
+                    document.getElementById("weather").innerText = "⚠️ Unable to load weather data";
+                });
+        }
+
+        fetchWeather();
+    </script>
+
+</body>
+</html>
