@@ -2,7 +2,7 @@
 
 body {
     
-    background-color:rgb(230, 243, 248);
+    background-color:rgb(237, 245, 248);
 }
 
 .responsive {
@@ -38,7 +38,7 @@ h1 {
     width: 100%;
     margin-top: 0;
     /*background-color: rgba(155, 199, 218, 0.336);*/ /* saving for later */
-    background-color:rgb(230, 243, 248);
+    background-color:rgb(237, 245, 248);
     height: 12vmin;
     display: flex; 
     position: relative;
@@ -65,11 +65,16 @@ h1 {
     position: relative;
     
 }
-
-button.defMag {
-    position: absolute;
+button.zoomMag {
     bottom: 2vmin;  
     right: 3vmin; 
+}
+button.defMag {
+    bottom: 8vmin;
+    right: 3vmin;
+}
+button.magButton {
+    position: absolute;
     background-color: transparent;
     outline:none;
     border: none;
@@ -81,7 +86,7 @@ button.defMag {
 
 }
 
-button.defMag img {
+button.magButton img {
     max-width: 100%; 
     max-height: 100%; 
 }
@@ -101,16 +106,16 @@ button.defMag img {
     margin-left: 1vmin;
     float: left;
     color: rgba(0, 121, 252, 0.897);
-    background-color: rgba(202, 225, 235, 0.918);
+    background-color: rgb(230, 241, 247);
 
 }
 
 #search1 {
     border: 1px solid;
     color: rgba(0, 121, 252, 0.897);
-    background-color:rgb(230, 243, 248);
+    background-color:rgb(237, 245, 248);
     font-family: 'Anuphan', sans-serif;
-    font-size: 3vmin;
+    font-size: 2vmin;
     border-radius: 15px;
     margin-top: 20vmin;
     height: 10%;
@@ -123,9 +128,9 @@ button.defMag img {
 #search2 {
     border: 1px solid;
     color: rgba(0, 121, 252, 0.897);
-    background-color:rgb(230, 243, 248);
+    background-color:rgb(237, 245, 248);
     font-family: 'Anuphan', sans-serif;
-    font-size: 3vmin;
+    font-size: 2vmin;
     border-radius: 15px;
     margin-top: 5vmin;
     height: 10%;
@@ -171,6 +176,98 @@ button.defMag img {
     font-size: 3vmin;
     font-weight: 100;    
     padding-left: 10vmin;
+}
+
+
+/* Station info box showed when hovering over the marker*/
+.info-box{
+    border-radius: 2px;
+    width: 500px;
+    height: 150px;
+    display: block;
+    color: rgb(38, 37, 37);
+    padding-top: -50px;
+}
+
+.info-box h3{
+    font-size: 20px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.station-info {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 12px;
+    color: rgb(92, 88, 88);
+    padding-left: 35px;
+}
+
+.availability {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    padding-left: 35px;
+}
+
+.bike-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+}
+
+.availability p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* Side bar info for station details */
+#station-detail {
+    position: fixed;
+    font-family: 'Anuphan', sans-serif;
+    color: rgba(0, 121, 252, 1); 
+    background-color: rgb(230, 241, 247); 
+    border-radius: 5px;
+    border: 1px solid;
+    top: 12vmin;
+    left: 0; /* Position of the sidebar */
+    width: 20%; /* Try 25% */
+    height: calc(100vh - 12vmin);
+    border-left: 3px;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+    padding: 4vmin;
+    z-index: 999;
+    overflow-y: auto;
+    display: none; /* Hidden by default */
+}
+
+#station-detail h3 {
+    color: rgb(38, 37, 37);
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+#station-detail p {
+    margin: 5px 0;
+    color: rgb(92, 88, 88);
+
+}
+
+.close-button{
+    color: rgb(92, 88, 88);
+    position: absolute;
+    font-size: 30px;
+    top:10px;
+    right: 15px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.close-button:hover{
+    color:rgba(0, 121, 252, 0.897);
 }
 
 
