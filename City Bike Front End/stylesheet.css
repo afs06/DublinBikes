@@ -195,6 +195,14 @@ button.magButton img {
     text-align: center;
 }
 
+.favorite-button{
+    width: 35px;
+    height:35px;
+    position: absolute;
+    top: 25%;
+    margin-left: 5px;
+}
+
 .station-info {
     display: flex;
     justify-content: space-between;
@@ -220,7 +228,8 @@ button.magButton img {
 .availability p {
     margin: 0;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 16px;
+    text-align: left;
 }
 
 /* Side bar info for station details */
@@ -253,6 +262,13 @@ button.magButton img {
     margin: 5px 0;
     color: rgb(92, 88, 88);
 
+}
+
+.favorite-button-sidebar{
+    width: 35px;
+    height:35px;
+    position: absolute;
+    top: 7%;
 }
 
 .close-button{
