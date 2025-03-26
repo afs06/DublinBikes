@@ -187,6 +187,7 @@ async function fetchAvailability() {
             const station = stations.find(station => station.number === availability.number);
             if (station) {
                 station.available_bikes = availability.available_bikes;
+                station.available_parking = availability.available_bike_stands;
             }
         });
         
@@ -237,13 +238,13 @@ function placeMarkers(map) {
         // Show availability when hovering over the station
         const infoWindow = new google.maps.InfoWindow({
             content: `<div class="info-box">
-                <h3>${station.name}</h3>
+                <h3>${station.name} <img src="Media/starUnfilled.png" alt="favorise" class="favorite-button"></h3>
                 <div class="station-info">
                     <p>Station Nr. ${station.number} | ${station.address}</p>
                 </div>
                 <div class="availability">
-                    <img src="${getBikeIcon(station.available_bikes)}" alt="Bike Availability" class="bike-icon"/>
-                    <p>${station.available_bikes}</p>
+                    <p>Total Bikes available: ${station.available_bikes}</br>
+                    Available Parking stands:  ${station.available_parking}</p>
                 </div>
             </div>`
         });
@@ -289,10 +290,10 @@ function stationDetail(station) {
     }
 
     stationSidebar.innerHTML = `
-        <h2>${station.name}</h2>
-        <p>Station Nr: ${station.number}</p>
-        <p><img src="${getBikeIcon(station.available_bikes)}" alt="Bike Availability" class="bike-icon"/>
-        ${station.available_bikes}</p>
+        <h2>${station.name}<img src="Media/starUnfilled.png" alt="favorise" class="favorite-button-sidebar"></h2>
+        <p>Station Nr. ${station.number}</p>
+        <p> Total bikes available: ${station.available_bikes}</br>
+            Available Parking stands:  ${station.available_parking}</p>
     `;
     stationSidebar.style.display = 'block';
 
