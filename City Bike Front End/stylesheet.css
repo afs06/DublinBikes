@@ -178,6 +178,32 @@ button.magButton img {
     padding-left: 10vmin;
 }
 
+/* Menu option bar */
+#menu-bar{
+    background-color: rgba(0, 121, 252, 0.897);
+    color: aliceblue;
+    font-family: 'Anuphan', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    border-radius: 20px;
+    width: 200px;
+    height: 40px;
+    position: absolute;
+    text-align: center;
+    margin-left: 650px;
+    line-height: 40px;
+    border-color: aliceblue;
+    cursor: pointer;
+    z-index: 999;
+}
+
+#menu-bar:hover{
+    background-color: aliceblue;
+    color: rgba(0, 121, 252, 0.897);
+    box-shadow: rgb(92, 88, 88);
+}
+
 
 /* Station info box showed when hovering over the marker*/
 .info-box{
@@ -194,14 +220,19 @@ button.magButton img {
     margin-bottom: 8px;
     text-align: center;
 }
+/* To remove the close button "X" */
+.gm-ui-hover-effect {
+    display: none !important;
+}
 
+/* Can be removed since favorite button was also removed in the info box
 .favorite-button{
     width: 35px;
     height:35px;
     position: absolute;
     top: 25%;
     margin-left: 5px;
-}
+} */
 
 .station-info {
     display: flex;
@@ -220,9 +251,10 @@ button.magButton img {
 }
 
 .bike-icon {
-    width: 40px;
-    height: 40px;
-    margin-right: 8px;
+    width: 30px;
+    height: 30px;
+    /* margin-right: 8px; */
+    margin-left: 5px;
 }
 
 .availability p {
@@ -236,13 +268,13 @@ button.magButton img {
 #station-detail {
     position: fixed;
     font-family: 'Anuphan', sans-serif;
-    color: rgba(0, 121, 252, 1); 
-    background-color: rgb(230, 241, 247); 
+    color: rgb(230, 241, 247);
+    background-color: rgba(0, 121, 252, 1); 
     border-radius: 5px;
     border: 1px solid;
     top: 12vmin;
     left: 0; /* Position of the sidebar */
-    width: 20%; /* Try 25% */
+    width: 25%; /* Try 25% */
     height: calc(100vh - 12vmin);
     border-left: 3px;
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
@@ -260,15 +292,18 @@ button.magButton img {
 
 #station-detail p {
     margin: 5px 0;
-    color: rgb(92, 88, 88);
+    color: rgbrgb(230, 241, 247);
 
 }
 
 .favorite-button-sidebar{
-    width: 35px;
-    height:35px;
-    position: absolute;
-    top: 7%;
+    width: 25px;
+    height:25px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 2px; 
+    margin-bottom: 5px;
+    cursor:pointer; 
 }
 
 .close-button{
@@ -283,7 +318,40 @@ button.magButton img {
 }
 
 .close-button:hover{
-    color:rgba(0, 121, 252, 0.897);
+    color:rgb(230, 241, 247);
 }
 
+/* Favorite station list */
+#favorite-list{
+    position: fixed;
+    font-family: 'Anuphan', sans-serif;
+    color:rgba(0, 121, 252, 1) ;
+    background-color: rgb(230, 241, 247); 
+    border-radius: 5px;
+    border: 1px solid;
+    top: 12vmin;
+    left: 0; /* Position of the sidebar */
+    width: 25%; /* Try 25% */
+    height: calc(100vh - 12vmin);
+    border-left: 3px; 
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+    padding: 4vmin;
+    display: none;
+}
+
+.favorite-item{
+    font-family: 'Anuphan', sans-serif;
+    font-size: 12px;
+    background-color: aliceblue;
+    color: rgba(92, 88, 88);
+    border-radius: 20px;
+}
+
+.favorite-item p{
+    color: rgba(92, 88, 88);
+    text-align: left;
+    line-height: 40px;
+    font-weight: bold;
+    margin-left: 20px;
+}
 
