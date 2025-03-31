@@ -170,13 +170,22 @@ button.magButton img {
     right: 1vmin;
 }
 
-.weather {
-    color: rgba(0, 121, 252, 0.897);
+#weather-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 10px;
     font-family: 'Anuphan', sans-serif;
-    font-size: 3vmin;
-    font-weight: 100;    
-    padding-left: 10vmin;
+    z-index: 5;
 }
+
+#weather {
+    font-size: 16px;
+    color: #333;
+}
+
 
 /* Menu option bar */
 #menu-bar{
@@ -354,4 +363,3 @@ button.magButton img {
     font-weight: bold;
     margin-left: 20px;
 }
-

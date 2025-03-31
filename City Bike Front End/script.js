@@ -1,3 +1,65 @@
+// 添加天气功能
+async function fetchWeather(lat, lng) {
+    const apiUrl = `http://127.0.0.1:5000/weather?lat=${lat}&lon=${lng}`;
+    
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log("API Response Data:", data);  // For debugging
+
+        if (data.main && data.weather && data.weather.length > 0) {
+            // 主天气信息
+            let temp = Math.round(data.main.temp);
+            let description = data.weather[0].description;
+            let weatherIcon = getWeatherIcon(data.weather[0].icon);
+            
+            // 详细天气信息
+            let feelsLike = Math.round(data.main.feels_like);
+            let humidity = data.main.humidity;
+            let windSpeed = data.wind.speed;
+            
+            // 将所有信息拼接成一行显示
+            document.getElementById("weather").innerHTML = 
+                `<span class="weather-city">Dublin</span> ${weatherIcon} 
+                <span class="weather-temp">${temp}°C</span> |
+                <span class="weather-feels-like">Feels like: ${feelsLike}°C</span> |
+                <span class="weather-humidity">Humidity: ${humidity}%</span> |
+                <span class="weather-wind">Wind: ${windSpeed} m/s</span>`;
+        
+        } else {
+            document.getElementById("weather").innerText = "⚠️ Weather unavailable";
+        }
+    } catch (error) {
+        console.error("Weather fetch failed:", error);
+        document.getElementById("weather").innerText = "⚠️ Weather unavailable";
+    }
+}
+
+// 根据天气代码返回对应的图标
+function getWeatherIcon(iconCode) {
+    const iconMap = {
+        "01d": "☀️", "01n": "🌙", "02d": "⛅", "02n": "☁️", 
+        "03d": "☁️", "03n": "☁️", "04d": "☁️", "04n": "☁️", 
+        "09d": "🌧️", "09n": "🌧️", "10d": "🌦️", "10n": "🌧️", 
+        "11d": "⛈️", "11n": "⛈️", "13d": "❄️", "13n": "❄️", 
+        "50d": "🌫️", "50n": "🌫️"
+    };
+    return iconMap[iconCode] || "🌤️"; // 默认图标
+}
+
+// 在地图上点击时显示天气信息
+async function addWeatherClickListener(map) {
+    google.maps.event.addListener(map, 'click', async (event) => {
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+        // 获取并显示该地点的天气信息
+        await fetchWeather(lat, lng);
+    });
+}
+
 // Initialize and add the map
 async function initMap() {
     // The location of Dublin
@@ -26,7 +88,15 @@ async function initMap() {
     const groupedStationsWithTotalsAndAverages = groupStations(stations);
     addGroupMarkers(map, groupedStationsWithTotalsAndAverages);
     groupMarkers.forEach(marker => marker.setMap(null)); // When map is initialized, we don't want to have the group markers to be visible
+
+    // 添加点击事件，显示天气信息
+    addWeatherClickListener(map);
 }
+
+// 页面加载完成后获取天气数据
+document.addEventListener('DOMContentLoaded', () => {
+    fetchWeather(53.3498, -6.2603);  // 默认显示都柏林的天气
+});
 
 // Function to add magnification controls
 function addMagnificationControls(map) {
