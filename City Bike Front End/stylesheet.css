@@ -25,7 +25,6 @@ body {
     left: 7.0vmin;
     top: 3.7vmin; 
     
-    
 }
 html, body{
     margin:0;
@@ -38,20 +37,20 @@ h1 {
     width: 100%;
     margin-top: 0;
     margin-bottom: 0;
-    /*background-color: rgba(155, 199, 218, 0.336);*/ /* saving for later */
-    background-color:rgb(237, 245, 248);
+    background-color: rgb(237, 245, 248);
     height: 12vmin;
     display: flex; 
-    position: relative;
     align-items: center; 
-
+    gap: 15px; /* 控制 title 和 home 之间的间距 */
+    padding: 0 20px; /* 给 h1 两边增加一些内边距 */
+    padding-right: 2vmin;
 }
+
 #bike{
     padding-left: 2vmin;
     padding-bottom: 2vmin;
 
 }
-
 
 #map {
     height: 100%;
@@ -125,7 +124,7 @@ button.magButton img {
     
 
 }
-
+/* 
 #search2 {
     border: 1px solid;
     color: rgba(0, 121, 252, 0.897);
@@ -138,7 +137,7 @@ button.magButton img {
     width: 80%;
     text-overflow: ellipsis;
 
-}
+} */
 
 #book {
     background-color: rgba(0, 121, 252, 0.897);
@@ -156,7 +155,7 @@ button.magButton img {
 
 }
 
-#login {
+/* #login {
     background-color: rgba(0, 121, 252, 0.897);
     font-family: 'Anuphan', sans-serif;
     font-size: 3vmin;
@@ -169,20 +168,30 @@ button.magButton img {
     position: absolute;
     top: 3vmin;
     right: 1vmin;
+} */
+
+.home-link {
+    font-weight: 300;
+    max-width: 100%;
+    font-size: 4vmin;  
+    color: #007bff; /* 蓝色 */
+    text-decoration: none;
+}
+
+.home-link:hover {
+    text-decoration: underline;
 }
 
 #weather-container {
-    position: absolute;
-    top: 5.5vmin;  /* Adjust the distance from the top */
-    left: 50%;
-    transform: translateX(-50%);
+    margin-left: auto; /* 让 weather 靠最右 */
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: nowrap;
     gap: 10px;
     font-size: 1.2vw;
     white-space: nowrap;
+    max-width: 20vw; /* 或者适当调整 */
+    overflow: hidden; /* 避免超出 */
+    text-overflow: ellipsis;
 }
 
 .weather {
@@ -194,13 +203,13 @@ button.magButton img {
 
 .weather span {
     font-size: 1.2vw;
-    color: rgba(0, 121, 252, 0.897);  /* Set to blue */
+    color: rgba(0, 121, 252, 0.897);  /* 设置为蓝色 */
 }
 
 .weather-details {
     font-family: 'Anuphan', sans-serif;
     font-size: 1.2vw;
-    color: rgba(0, 121, 252, 0.897);  /* Set to blue */
+    color: rgba(0, 121, 252, 0.897);
     text-align: left;
     padding-top: 0.5vmin;
     display: grid;
@@ -220,14 +229,13 @@ button.magButton img {
 
 .weather-feels-like, .weather-humidity, .weather-wind {
     font-size: 1.2vw;
-    color: rgba(0, 121, 252, 0.7);  /* Use a lighter color for detailed information */
+    color: rgba(0, 121, 252, 0.7);  /* 详细信息使用浅色 */
 }
 
-/* Responsive layout */
+/* 响应式布局 */
 @media screen and (max-width: 768px) {
     #weather-container {
-        left: 37vmin;
-        width: 20vmin;
+        font-size: 1.8vmin;
     }
     
     .weather {
