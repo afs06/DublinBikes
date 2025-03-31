@@ -172,7 +172,7 @@ button.magButton img {
 
 #weather-container {
     position: absolute;
-    top: 50px;  /* 更改为离顶部的距离 */
+    top: 50px;  /* Adjust the distance from the top */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -194,14 +194,14 @@ button.magButton img {
 .weather span {
     font-size: 1.2vw;
     font-weight: bold;
-    color: #007bff;  /* 设置为蓝色 */
+    color: #007bff;  /* Set to blue */
 }
 
 .weather-details {
     font-family: 'Anuphan', sans-serif;
     font-size: 1.8vmin;
     font-weight: 400;
-    color: rgba(0, 121, 252, 0.897);  /* 设置为蓝色 */
+    color: rgba(0, 121, 252, 0.897);  /* Set to blue */
     text-align: left;
     padding-top: 0.5vmin;
     display: grid;
@@ -223,10 +223,10 @@ button.magButton img {
 .weather-feels-like, .weather-humidity, .weather-wind {
     font-weight: 400;
     font-size: 1.4vmin;
-    color: rgba(0, 121, 252, 0.7);  /* 为详细信息使用浅色 */
+    color: rgba(0, 121, 252, 0.7);  /* Use a lighter color for detailed information */
 }
 
-/* 响应式布局 */
+/* Responsive layout */
 @media screen and (max-width: 768px) {
     #weather-container {
         left: 37vmin;

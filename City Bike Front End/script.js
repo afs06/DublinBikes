@@ -1,4 +1,4 @@
-// 添加天气功能
+// Add weather functionality
 async function fetchWeather(lat, lng) {
     const apiUrl = `http://127.0.0.1:5000/weather?lat=${lat}&lon=${lng}`;
     
@@ -11,17 +11,17 @@ async function fetchWeather(lat, lng) {
         console.log("API Response Data:", data);  // For debugging
 
         if (data.main && data.weather && data.weather.length > 0) {
-            // 主天气信息
+            // Main weather information
             let temp = Math.round(data.main.temp);
             let description = data.weather[0].description;
             let weatherIcon = getWeatherIcon(data.weather[0].icon);
             
-            // 详细天气信息
+            // Detailed weather information
             let feelsLike = Math.round(data.main.feels_like);
             let humidity = data.main.humidity;
             let windSpeed = data.wind.speed;
             
-            // 将所有信息拼接成一行显示
+            // Combine all information into a single display line
             document.getElementById("weather").innerHTML = 
                 `<span class="weather-city">Dublin</span> ${weatherIcon} 
                 <span class="weather-temp">${temp}°C</span> |
@@ -38,7 +38,7 @@ async function fetchWeather(lat, lng) {
     }
 }
 
-// 根据天气代码返回对应的图标
+// Return the corresponding icon based on the weather code
 function getWeatherIcon(iconCode) {
     const iconMap = {
         "01d": "☀️", "01n": "🌙", "02d": "⛅", "02n": "☁️", 
@@ -47,15 +47,15 @@ function getWeatherIcon(iconCode) {
         "11d": "⛈️", "11n": "⛈️", "13d": "❄️", "13n": "❄️", 
         "50d": "🌫️", "50n": "🌫️"
     };
-    return iconMap[iconCode] || "🌤️"; // 默认图标
+    return iconMap[iconCode] || "🌤️"; // Default icon
 }
 
-// 在地图上点击时显示天气信息
+// Display weather information when clicking on the map
 async function addWeatherClickListener(map) {
     google.maps.event.addListener(map, 'click', async (event) => {
         const lat = event.latLng.lat();
         const lng = event.latLng.lng();
-        // 获取并显示该地点的天气信息
+        // Fetch and display the weather information for the clicked location
         await fetchWeather(lat, lng);
     });
 }
@@ -87,16 +87,17 @@ async function initMap() {
 
     const groupedStationsWithTotalsAndAverages = groupStations(stations);
     addGroupMarkers(map, groupedStationsWithTotalsAndAverages);
-    groupMarkers.forEach(marker => marker.setMap(null)); // When map is initialized, we don't want to have the group markers to be visible
+    groupMarkers.forEach(marker => marker.setMap(null)); // When the map is initialized, group markers should not be visible
 
-    // 添加点击事件，显示天气信息
+    // Add click event to display weather information
     addWeatherClickListener(map);
 }
 
-// 页面加载完成后获取天气数据
+// Fetch weather data when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    fetchWeather(53.3498, -6.2603);  // 默认显示都柏林的天气
+    fetchWeather(53.3498, -6.2603);  // Default: display Dublin's weather
 });
+
 
 // Function to add magnification controls
 function addMagnificationControls(map) {
