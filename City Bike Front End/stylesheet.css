@@ -253,16 +253,16 @@ button.magButton img {
     background-color: rgba(0, 121, 252, 0.897);
     color: aliceblue;
     font-family: 'Anuphan', sans-serif;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 2vmin;
+    /* font-weight: bold; */
     letter-spacing: 0.1em;
     border-radius: 20px;
-    width: 200px;
-    height: 40px;
-    position: absolute;
+    width: 80%;
+    height: 4%;
     text-align: center;
-    margin-left: 650px;
-    line-height: 40px;
+    padding-top: 2%;
+    margin-top: -50%;
+    margin-left: 4vmin;
     border-color: aliceblue;
     cursor: pointer;
     z-index: 999;
@@ -271,7 +271,7 @@ button.magButton img {
 #menu-bar:hover{
     background-color: aliceblue;
     color: rgba(0, 121, 252, 0.897);
-    box-shadow: rgb(92, 88, 88);
+    box-shadow: 2px 2px 5px rgb(97, 93, 93);
 }
 
 
@@ -408,6 +408,22 @@ button.magButton img {
     padding: 4vmin;
     display: none;
 }
+
+.close-fav-button{
+    color: rgb(0, 121, 252, 1);
+    position: absolute;
+    font-size: 30px;
+    top:10px;
+    right: 15px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.close-fav-button:hover{
+    color:rgb(92, 88, 88);
+}
+
 
 .favorite-item{
     font-family: 'Anuphan', sans-serif;
