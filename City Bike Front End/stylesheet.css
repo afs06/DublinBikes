@@ -171,12 +171,103 @@ button.magButton img {
     right: 1vmin;
 }
 
+#weather-container {
+    position: absolute;
+    top: 50px;  /* Adjust the distance from the top */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    font-size: 1.2vw;
+    white-space: nowrap;
+}
+
 .weather {
-    color: rgba(0, 121, 252, 0.897);
+    font-size: 1.2vw;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.weather span {
+    font-size: 1.2vw;
+    font-weight: bold;
+    color: #007bff;  /* Set to blue */
+}
+
+.weather-details {
     font-family: 'Anuphan', sans-serif;
-    font-size: 3vmin;
-    font-weight: 100;    
-    padding-left: 10vmin;
+    font-size: 1.8vmin;
+    font-weight: 400;
+    color: rgba(0, 121, 252, 0.897);  /* Set to blue */
+    text-align: left;
+    padding-top: 0.5vmin;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.3vmin;
+}
+
+.weather-temp {
+    font-weight: 600;
+    font-size: 2.8vmin;
+    color: rgba(0, 121, 252, 0.897);
+}
+
+.weather-city {
+    font-weight: 600;
+    color: rgba(0, 121, 252, 0.897);
+}
+
+.weather-feels-like, .weather-humidity, .weather-wind {
+    font-weight: 400;
+    font-size: 1.4vmin;
+    color: rgba(0, 121, 252, 0.7);  /* Use a lighter color for detailed information */
+}
+
+/* Responsive layout */
+@media screen and (max-width: 768px) {
+    #weather-container {
+        left: 37vmin;
+        width: 20vmin;
+    }
+    
+    .weather {
+        font-size: 2.2vmin;
+    }
+    
+    .weather-details {
+        font-size: 1.6vmin;
+    }
+}
+
+
+/* Menu option bar */
+#menu-bar{
+    background-color: rgba(0, 121, 252, 0.897);
+    color: aliceblue;
+    font-family: 'Anuphan', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    border-radius: 20px;
+    width: 200px;
+    height: 40px;
+    position: absolute;
+    text-align: center;
+    margin-left: 650px;
+    line-height: 40px;
+    border-color: aliceblue;
+    cursor: pointer;
+    z-index: 999;
+}
+
+#menu-bar:hover{
+    background-color: aliceblue;
+    color: rgba(0, 121, 252, 0.897);
+    box-shadow: rgb(92, 88, 88);
 }
 
 
@@ -195,6 +286,19 @@ button.magButton img {
     margin-bottom: 8px;
     text-align: center;
 }
+/* To remove the close button "X" */
+.gm-ui-hover-effect {
+    display: none !important;
+}
+
+/* Can be removed since favorite button was also removed in the info box
+.favorite-button{
+    width: 35px;
+    height:35px;
+    position: absolute;
+    top: 25%;
+    margin-left: 5px;
+} */
 
 .station-info {
     display: flex;
@@ -213,23 +317,25 @@ button.magButton img {
 }
 
 .bike-icon {
-    width: 40px;
-    height: 40px;
-    margin-right: 8px;
+    width: 30px;
+    height: 30px;
+    /* margin-right: 8px; */
+    margin-left: 5px;
 }
 
 .availability p {
     margin: 0;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 16px;
+    text-align: left;
 }
 
 /* Side bar info for station details */
 #station-detail {
     position: fixed;
     font-family: 'Anuphan', sans-serif;
-    color: rgba(0, 121, 252, 1); 
-    background-color: rgb(230, 241, 247); 
+    color: rgb(230, 241, 247);
+    background-color: rgba(0, 121, 252, 1); 
     border-radius: 5px;
     border: 1px solid;
     top: 12vmin;
@@ -252,8 +358,18 @@ button.magButton img {
 
 #station-detail p {
     margin: 5px 0;
-    color: rgb(92, 88, 88);
+    color: rgbrgb(230, 241, 247);
 
+}
+
+.favorite-button-sidebar{
+    width: 25px;
+    height:25px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 2px; 
+    margin-bottom: 5px;
+    cursor:pointer; 
 }
 
 .close-button{
@@ -268,5 +384,39 @@ button.magButton img {
 }
 
 .close-button:hover{
-    color:rgba(0, 121, 252, 0.897);
+    color:rgb(230, 241, 247);
+}
+
+/* Favorite station list */
+#favorite-list{
+    position: fixed;
+    font-family: 'Anuphan', sans-serif;
+    color:rgba(0, 121, 252, 1) ;
+    background-color: rgb(230, 241, 247); 
+    border-radius: 5px;
+    border: 1px solid;
+    top: 12vmin;
+    left: 0; /* Position of the sidebar */
+    width: 25%; /* Try 25% */
+    height: calc(100vh - 12vmin);
+    border-left: 3px; 
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+    padding: 4vmin;
+    display: none;
+}
+
+.favorite-item{
+    font-family: 'Anuphan', sans-serif;
+    font-size: 12px;
+    background-color: aliceblue;
+    color: rgba(92, 88, 88);
+    border-radius: 20px;
+}
+
+.favorite-item p{
+    color: rgba(92, 88, 88);
+    text-align: left;
+    line-height: 40px;
+    font-weight: bold;
+    margin-left: 20px;
 }
