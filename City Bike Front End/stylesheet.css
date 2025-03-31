@@ -172,18 +172,74 @@ button.magButton img {
 
 #weather-container {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-    border-radius: 10px;
-    font-family: 'Anuphan', sans-serif;
-    z-index: 5;
+    top: 50px;  /* 更改为离顶部的距离 */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    font-size: 1.2vw;
+    white-space: nowrap;
 }
 
-#weather {
-    font-size: 16px;
-    color: #333;
+.weather {
+    font-size: 1.2vw;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.weather span {
+    font-size: 1.2vw;
+    font-weight: bold;
+    color: #007bff;  /* 设置为蓝色 */
+}
+
+.weather-details {
+    font-family: 'Anuphan', sans-serif;
+    font-size: 1.8vmin;
+    font-weight: 400;
+    color: rgba(0, 121, 252, 0.897);  /* 设置为蓝色 */
+    text-align: left;
+    padding-top: 0.5vmin;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.3vmin;
+}
+
+.weather-temp {
+    font-weight: 600;
+    font-size: 2.8vmin;
+    color: rgba(0, 121, 252, 0.897);
+}
+
+.weather-city {
+    font-weight: 600;
+    color: rgba(0, 121, 252, 0.897);
+}
+
+.weather-feels-like, .weather-humidity, .weather-wind {
+    font-weight: 400;
+    font-size: 1.4vmin;
+    color: rgba(0, 121, 252, 0.7);  /* 为详细信息使用浅色 */
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 768px) {
+    #weather-container {
+        left: 37vmin;
+        width: 20vmin;
+    }
+    
+    .weather {
+        font-size: 2.2vmin;
+    }
+    
+    .weather-details {
+        font-size: 1.6vmin;
+    }
 }
 
 
