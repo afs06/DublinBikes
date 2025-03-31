@@ -173,7 +173,7 @@ button.magButton img {
 
 #weather-container {
     position: absolute;
-    top: 50px;  /* Adjust the distance from the top */
+    top: 5.5vmin;  /* Adjust the distance from the top */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -194,14 +194,12 @@ button.magButton img {
 
 .weather span {
     font-size: 1.2vw;
-    font-weight: bold;
-    color: #007bff;  /* Set to blue */
+    color: rgba(0, 121, 252, 0.897);  /* Set to blue */
 }
 
 .weather-details {
     font-family: 'Anuphan', sans-serif;
-    font-size: 1.8vmin;
-    font-weight: 400;
+    font-size: 1.2vw;
     color: rgba(0, 121, 252, 0.897);  /* Set to blue */
     text-align: left;
     padding-top: 0.5vmin;
@@ -211,19 +209,17 @@ button.magButton img {
 }
 
 .weather-temp {
-    font-weight: 600;
-    font-size: 2.8vmin;
+    font-size: 1.2vw;
     color: rgba(0, 121, 252, 0.897);
 }
 
 .weather-city {
-    font-weight: 600;
     color: rgba(0, 121, 252, 0.897);
+    font-size: 1.2vw;
 }
 
 .weather-feels-like, .weather-humidity, .weather-wind {
-    font-weight: 400;
-    font-size: 1.4vmin;
+    font-size: 1.2vw;
     color: rgba(0, 121, 252, 0.7);  /* Use a lighter color for detailed information */
 }
 
