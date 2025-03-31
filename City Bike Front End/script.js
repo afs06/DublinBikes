@@ -13,6 +13,7 @@ async function initMap() {
         disableDefaultUI: true,
     });
 
+
     // Add magnification buttons
     addMagnificationControls(map);
 
@@ -25,7 +26,7 @@ async function initMap() {
 
     const groupedStationsWithTotalsAndAverages = groupStations(stations);
     addGroupMarkers(map, groupedStationsWithTotalsAndAverages);
-    groupMarkers.forEach(marker => marker.setMap(null)); // When map is initialized, we don't want to have the group markers to be visible
+    groupMarkers.forEach(marker => marker.setMap(null)); // When map is initialized, we don't want the group markers to be visible
 }
 
 // Function to add magnification controls
@@ -71,7 +72,7 @@ function createZoomMagControl(map) {
     zoomMagButton.innerHTML = '<img src="Media/magnificationOut.png">';
 
     zoomMagButton.addEventListener("click", () => {
-        map.setZoom(13); 
+        map.setZoom(14); 
         map.setCenter({ lat: 53.345430, lng: -6.263867 });
         hideMarkers(); // Hide station markers
         showGroupMarkers(map); // Show group markers
@@ -90,7 +91,7 @@ function showGroupMarkers(map) {
     groupMarkers.forEach(marker => marker.setMap(map));
 }
 
-// Make initMap globally accessible
+// Making initMap globally accessible
 window.initMap = initMap;
 
 // Function to fetch station data
@@ -125,7 +126,7 @@ function groupStations(stations) {
         return a.latitude - b.latitude;
     });
 
-    // Grouping stations into arrays of 20
+    // Grouping stations into arrays of 20 (I calculated 115 total stations so roughly 5 equal groups)
     const groupedStations = [];
     for (let i = 0; i < stations.length; i += 20) {
         const group = stations.slice(i, i + 20); // Get a group of 20 stations
@@ -162,17 +163,32 @@ function addGroupMarkers(map, groupedStationsWithTotalsAndAverages) {
     groupedStationsWithTotalsAndAverages.forEach(group => {
         const groupMarker = new google.maps.Marker({
             position: { lat: group.averageLatitude, lng: group.averageLongitude },
-            map: map, 
+            map: map,
             title: `Group ${group.groupId} - Total Bikes: ${group.totalAvailableBikes}`,
-            icon: {
-                url: "Media/bike.png",  
-                scaledSize: new google.maps.Size(40, 40),  // Set size of icon
-                anchor: new google.maps.Point(14, 14)  // Center bottom alignment
+            label: {
+                text: group.totalAvailableBikes.toString(),
+                color: "#000000",
+                fontWeight: "bold"
             },
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 20,
+                fillColor: "white",
+                fillOpacity: 1,
+                strokeColor: "rgba(0, 121, 252, 0.897)",
+                strokeWeight: 1,
+            }
         });
 
-        // Store the group marker in the array
-        groupMarkers.push(groupMarker);
+        // Adding on click event for hiding group markers and showing station markers
+        google.maps.event.addListener(groupMarker, 'click', () => {
+            map.panTo({ lat: group.averageLatitude, lng: group.averageLongitude });
+            map.setZoom(15);
+            showMarkers(map); // Show station markers
+            hideGroupMarkers(); // Hide group markers
+        });
+
+        groupMarkers.push(groupMarker); 
     });
 }
 
@@ -187,7 +203,6 @@ async function fetchAvailability() {
             const station = stations.find(station => station.number === availability.number);
             if (station) {
                 station.available_bikes = availability.available_bikes;
-                station.available_parking = availability.available_bike_stands;
             }
         });
         
@@ -238,21 +253,28 @@ function placeMarkers(map) {
         // Show availability when hovering over the station
         const infoWindow = new google.maps.InfoWindow({
             content: `<div class="info-box">
-                <h3>${station.name} <img src="Media/starUnfilled.png" alt="favorise" class="favorite-button"></h3>
+                <h3>${station.name}</h3>
                 <div class="station-info">
                     <p>Station Nr. ${station.number} | ${station.address}</p>
                 </div>
                 <div class="availability">
-                    <p>Total Bikes available: ${station.available_bikes}</br>
-                    Available Parking stands:  ${station.available_parking}</p>
+                    <img src="${getBikeIcon(station.available_bikes)}" alt="Bike Availability" class="bike-icon"/>
+                    <p>${station.available_bikes}</p>
                 </div>
-            </div>`
+            </div>`,
+            disableAutoPan: true
         });
 
         // Add hover to show the info box
         bikeMarker.addListener('mouseover', () => infoWindow.open(map, bikeMarker));
         bikeMarker.addListener('mouseout', () => infoWindow.close());
-        bikeMarker.addListener('click', () => stationDetail(station));
+        bikeMarker.addListener('click', () => {
+
+            stationDetail(station);  
+        
+            map.panTo({ lat: station.latitude, lng: station.longitude });
+        
+        });
     }
 }
 
@@ -290,10 +312,10 @@ function stationDetail(station) {
     }
 
     stationSidebar.innerHTML = `
-        <h2>${station.name}<img src="Media/starUnfilled.png" alt="favorise" class="favorite-button-sidebar"></h2>
-        <p>Station Nr. ${station.number}</p>
-        <p> Total bikes available: ${station.available_bikes}</br>
-            Available Parking stands:  ${station.available_parking}</p>
+        <h2>${station.name}</h2>
+        <p>Station Nr: ${station.number}</p>
+        <p><img src="${getBikeIcon(station.available_bikes)}" alt="Bike Availability" class="bike-icon"/>
+        ${station.available_bikes}</p>
     `;
     stationSidebar.style.display = 'block';
 
