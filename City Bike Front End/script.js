@@ -1,3 +1,65 @@
+// Add weather functionality
+async function fetchWeather(lat, lng) {
+    const apiUrl = `http://127.0.0.1:5000/weather?lat=${lat}&lon=${lng}`;
+    
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log("API Response Data:", data);  // For debugging
+
+        if (data.main && data.weather && data.weather.length > 0) {
+            // Main weather information
+            let temp = Math.round(data.main.temp);
+            let description = data.weather[0].description;
+            let weatherIcon = getWeatherIcon(data.weather[0].icon);
+            
+            // Detailed weather information
+            let feelsLike = Math.round(data.main.feels_like);
+            let humidity = data.main.humidity;
+            let windSpeed = data.wind.speed;
+            
+            // Combine all information into a single display line
+            document.getElementById("weather").innerHTML = 
+                `<span class="weather-city">Dublin</span> ${weatherIcon} 
+                <span class="weather-temp">${temp}°C</span> |
+                <span class="weather-feels-like">Feels like: ${feelsLike}°C</span> |
+                <span class="weather-humidity">Humidity: ${humidity}%</span> |
+                <span class="weather-wind">Wind: ${windSpeed} m/s</span>`;
+        
+        } else {
+            document.getElementById("weather").innerText = "⚠️ Weather unavailable";
+        }
+    } catch (error) {
+        console.error("Weather fetch failed:", error);
+        document.getElementById("weather").innerText = "⚠️ Weather unavailable";
+    }
+}
+
+// Return the corresponding icon based on the weather code
+function getWeatherIcon(iconCode) {
+    const iconMap = {
+        "01d": "☀️", "01n": "🌙", "02d": "⛅", "02n": "☁️", 
+        "03d": "☁️", "03n": "☁️", "04d": "☁️", "04n": "☁️", 
+        "09d": "🌧️", "09n": "🌧️", "10d": "🌦️", "10n": "🌧️", 
+        "11d": "⛈️", "11n": "⛈️", "13d": "❄️", "13n": "❄️", 
+        "50d": "🌫️", "50n": "🌫️"
+    };
+    return iconMap[iconCode] || "🌤️"; // Default icon
+}
+
+// Display weather information when clicking on the map
+async function addWeatherClickListener(map) {
+    google.maps.event.addListener(map, 'click', async (event) => {
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+        // Fetch and display the weather information for the clicked location
+        await fetchWeather(lat, lng);
+    });
+}
+
 // Initialize and add the map
 async function initMap() {
     // The location of Dublin
@@ -26,8 +88,17 @@ async function initMap() {
 
     const groupedStationsWithTotalsAndAverages = groupStations(stations);
     addGroupMarkers(map, groupedStationsWithTotalsAndAverages);
-    groupMarkers.forEach(marker => marker.setMap(null)); // When map is initialized, we don't want the group markers to be visible
+    groupMarkers.forEach(marker => marker.setMap(null)); // When the map is initialized, group markers should not be visible
+
+    // Add click event to display weather information
+    addWeatherClickListener(map);
 }
+
+// Fetch weather data when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    fetchWeather(53.3498, -6.2603);  // Default: display Dublin's weather
+});
+
 
 // Function to add magnification controls
 function addMagnificationControls(map) {
@@ -203,6 +274,7 @@ async function fetchAvailability() {
             const station = stations.find(station => station.number === availability.number);
             if (station) {
                 station.available_bikes = availability.available_bikes;
+                station.available_parking = availability.available_bike_stands;
             }
         });
         
@@ -253,13 +325,13 @@ function placeMarkers(map) {
         // Show availability when hovering over the station
         const infoWindow = new google.maps.InfoWindow({
             content: `<div class="info-box">
-                <h3>${station.name}</h3>
+                <h3>${station.name} </h3>
                 <div class="station-info">
                     <p>Station Nr. ${station.number} | ${station.address}</p>
                 </div>
                 <div class="availability">
-                    <img src="${getBikeIcon(station.available_bikes)}" alt="Bike Availability" class="bike-icon"/>
-                    <p>${station.available_bikes}</p>
+                    <p>Total Bikes available: ${station.available_bikes}</br>
+                    Available Parking stands:  ${station.available_parking}</p>
                 </div>
             </div>`,
             disableAutoPan: true
@@ -270,7 +342,8 @@ function placeMarkers(map) {
         bikeMarker.addListener('mouseout', () => infoWindow.close());
         bikeMarker.addListener('click', () => {
 
-            stationDetail(station);  
+            stationDetail(station); 
+            infoWindow.close(); //remove the infobox once one station is clicked 
         
             map.panTo({ lat: station.latitude, lng: station.longitude });
         
@@ -312,12 +385,20 @@ function stationDetail(station) {
     }
 
     stationSidebar.innerHTML = `
-        <h2>${station.name}</h2>
-        <p>Station Nr: ${station.number}</p>
-        <p><img src="${getBikeIcon(station.available_bikes)}" alt="Bike Availability" class="bike-icon"/>
-        ${station.available_bikes}</p>
+        <h2>
+            ${station.name}
+            <img src="Media/starWhite.png" alt="favorise" class="favorite-button-sidebar"/>
+        </h2>
+        <p>Station Nr. ${station.number}</p>
+        <p> Total bikes available: ${station.available_bikes}</br>
+            Available Parking stands:  ${station.available_parking}</p>
     `;
     stationSidebar.style.display = 'block';
+
+    const favoriteButton = document.querySelector('.favorite-button-sidebar');
+    // Add click event directly to the button
+    favoriteButton.addEventListener('click', () => favoriteStation(station, favoriteButton));
+
 
     // Adding a close button
     const close_button = document.createElement("button");
@@ -330,3 +411,51 @@ function stationDetail(station) {
     // Adding the close button to the sidebar
     stationSidebar.appendChild(close_button);
 }
+
+const favorites = [];
+
+// Function to change favorite button to starFilled.png and add station to a list 
+function favoriteStation(station, buttonElement){
+    if (!favorites.some(fav => fav.number === station.number)) {
+        favorites.push(station);
+        buttonElement.src = "Media/starFilled.png"; // Change to filled star
+    } else {
+        const index = favorites.findIndex(fav => fav.number === station.number);
+        favorites.splice(index, 1);
+        buttonElement.src = "Media/starWhite.png"; // Change back to unfilled
+    }
+}
+
+// display list once menu option is clicked
+window.addEventListener("DOMContentLoaded", () => {
+document.getElementById("menu-bar").addEventListener("click", () =>{
+    let favoriteSidebar = document.getElementById("favorite-list");
+
+    // If it doesn't exist, create it
+    if (!favoriteSidebar) {
+        favoriteSidebar = document.createElement("div");
+        favoriteSidebar.id = "favorite-list";
+        document.body.appendChild(favoriteSidebar);
+    }
+
+    // Toggle visibility
+    favoriteSidebar.style.display = 
+        favoriteSidebar.style.display === "none" || favoriteSidebar.style.display === ""
+        ? "block"
+        : "none";
+
+    // Populate the list
+    favoriteSidebar.innerHTML = `<h2>Favorite Stations</h2>`;
+
+    if (favorites.length === 0) {
+        favoriteSidebar.innerHTML += `<p>No favorite Stations added</p>`;
+    } else {
+        favorites.forEach(station => {
+            favoriteSidebar.innerHTML += `
+            <div class="favorite-item">
+            <p>${station.name} | ${station.available_bikes} Bikes </p>
+            </div>`;
+        });
+    }
+});
+});
