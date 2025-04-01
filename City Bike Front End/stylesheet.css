@@ -17,15 +17,12 @@ body {
     font-family: 'Anuphan', sans-serif;
     color: rgba(0, 121, 252, 0.897);
     font-weight: 300;
-    max-width: 100%;
-    font-size: 4vmin;  
-    padding-bottom: 1px;
-    letter-spacing: -2px;    
-    position: absolute;
-    left: 7.0vmin;
-    top: 3.7vmin; 
-    
+    font-size: 4vmin;
+    letter-spacing: -2px;
+    margin-left: 10px; /* Add some spacing after the logo */
+    /* Remove position: absolute */
 }
+
 html, body{
     margin:0;
 }
@@ -39,17 +36,14 @@ h1 {
     margin-bottom: 0;
     background-color: rgb(237, 245, 248);
     height: 12vmin;
-    display: flex; 
-    align-items: center; 
-    gap: 15px; 
-    padding: 0 20px; 
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
     padding-right: 2vmin;
 }
 
 #bike{
-    padding-left: 2vmin;
     padding-bottom: 2vmin;
-
 }
 
 #map {
@@ -176,10 +170,10 @@ button.magButton img {
 
 .home-link {
     font-weight: 300;
-    max-width: 100%;
-    font-size: 4vmin;  
+    font-size: 3vmin;
     color: #007bff;
     text-decoration: none;
+    margin-left: 20px; /* Add space between dublin bikes and home */
 }
 
 .home-link:hover {
