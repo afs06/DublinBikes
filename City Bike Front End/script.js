@@ -382,10 +382,21 @@ function stationDetail(station) {
         document.body.appendChild(stationSidebar);
     }
 
+    //close the favorites sidebar if user clicks on station again
+    const favoriteSidebar = document.getElementById("favorite-list");
+    if (favoriteSidebar){
+        favoriteSidebar.style.display="none";
+    }
+
+    //Check if the station is already marked as favorite
+    const isFavorite = favorites.some(fav => fav.number === station.number);
+    //if it is marked as favorite use right icon
+    const starIcon = isFavorite ? "Media/starFilled.png" : "Media/starWhite.png";
+
     stationSidebar.innerHTML = `
         <h2>
             ${station.name}
-            <img src="Media/starWhite.png" alt="favorise" class="favorite-button-sidebar"/>
+            <img src="${starIcon}" alt="favorise" class="favorite-button-sidebar"/>
         </h2>
         <p>Station Nr. ${station.number}</p>
         <p> Total bikes available: ${station.available_bikes}</br>
@@ -394,9 +405,14 @@ function stationDetail(station) {
     stationSidebar.style.display = 'block';
 
     const favoriteButton = document.querySelector('.favorite-button-sidebar');
+    
     // Add click event directly to the button
-    favoriteButton.addEventListener('click', () => favoriteStation(station, favoriteButton));
-
+    favoriteButton.addEventListener('click', () =>{
+        favoriteStation(station, favoriteButton);
+        favoriteButton.src = favorites.some(fav => fav.number === station.number)
+        ? "Media/starFilled.png"
+        : "Media/starWhite.png";
+    }); 
 
     // Adding a close button
     const close_button = document.createElement("button");
@@ -410,6 +426,7 @@ function stationDetail(station) {
     stationSidebar.appendChild(close_button);
 }
 
+//to store the favorite stations
 const favorites = [];
 
 // Function to change favorite button to starFilled.png and add station to a list 
@@ -450,11 +467,8 @@ document.getElementById("menu-bar").addEventListener("click", () =>{
         favoriteSidebar.appendChild(listContainer);
     }
 
-    // Toggle visibility
-    favoriteSidebar.style.display = 
-        favoriteSidebar.style.display === "none" || favoriteSidebar.style.display === "" 
-        ? "block" 
-        : "none";
+    // show favorite sidebar
+    favoriteSidebar.style.display = "block";
 
     // Update only the list content
     const listContainer = document.getElementById("favorite-list-content");
