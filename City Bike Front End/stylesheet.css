@@ -41,8 +41,8 @@ h1 {
     height: 12vmin;
     display: flex; 
     align-items: center; 
-    gap: 15px; /* 控制 title 和 home 之间的间距 */
-    padding: 0 20px; /* 给 h1 两边增加一些内边距 */
+    gap: 15px; 
+    padding: 0 20px; 
     padding-right: 2vmin;
 }
 
@@ -178,7 +178,7 @@ button.magButton img {
     font-weight: 300;
     max-width: 100%;
     font-size: 4vmin;  
-    color: #007bff; /* 蓝色 */
+    color: #007bff;
     text-decoration: none;
 }
 
@@ -198,15 +198,14 @@ button.magButton img {
     align-items: center;
     justify-content: center;
     
-    position: absolute; /* 让它在 sidebar 内自由定位 */
-    top: calc(20vmin + 12%); /* 确保它在 #search1 下面 */
+    position: absolute; /* Allow free positioning inside the sidebar */
+    top: calc(20vmin + 12%); /* Ensure it appears below #search1 */
     left: 50%;
-    transform: translateX(-50%); /* 居中对齐 */
+    transform: translateX(-50%); /* Center align */
     
-    overflow: visible; /* 确保内容不会被裁剪 */
-    z-index: 10; /* 确保它不会被其他元素覆盖 */
+    overflow: visible; /* Ensure content is not clipped */
+    z-index: 10; /* Ensure it is not covered by other elements */
 }
-
 
 /* Menu option bar */
 #menu-bar{
