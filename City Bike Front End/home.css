@@ -67,14 +67,14 @@ nav {
     color: rgba(0, 121, 252, 0.897);
 }
 
-.login-btn {
+/* .login-btn {
     background-color: rgba(0, 121, 252, 0.897);
     color: white;
     border: none;
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
-}
+} */
 
 .hero-section {
     flex-grow: 1;
