@@ -17,16 +17,12 @@ body {
     font-family: 'Anuphan', sans-serif;
     color: rgba(0, 121, 252, 0.897);
     font-weight: 300;
-    max-width: 100%;
-    font-size: 4vmin;  
-    padding-bottom: 1px;
-    letter-spacing: -2px;    
-    position: absolute;
-    left: 7.0vmin;
-    top: 3.7vmin; 
-    
-    
+    font-size: 4vmin;
+    letter-spacing: -2px;
+    margin-left: 10px; /* Add some spacing after the logo */
+    /* Remove position: absolute */
 }
+
 html, body{
     margin:0;
 }
@@ -38,20 +34,17 @@ h1 {
     width: 100%;
     margin-top: 0;
     margin-bottom: 0;
-    /*background-color: rgba(155, 199, 218, 0.336);*/ /* saving for later */
-    background-color:rgb(237, 245, 248);
+    background-color: rgb(237, 245, 248);
     height: 12vmin;
-    display: flex; 
-    position: relative;
-    align-items: center; 
-
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    padding-right: 2vmin;
 }
+
 #bike{
-    padding-left: 2vmin;
     padding-bottom: 2vmin;
-
 }
-
 
 #map {
     height: 100%;
@@ -107,6 +100,11 @@ button.magButton img {
     color: rgba(0, 121, 252, 0.897);
     background-color: rgb(230, 241, 247);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
 
 }
 
@@ -122,10 +120,9 @@ button.magButton img {
     width: 80%;
     text-overflow: ellipsis;
     text-align: center;
-    
-
+    margin-bottom: 20px;
 }
-
+/* 
 #search2 {
     border: 1px solid;
     color: rgba(0, 121, 252, 0.897);
@@ -138,7 +135,7 @@ button.magButton img {
     width: 80%;
     text-overflow: ellipsis;
 
-}
+} */
 
 #book {
     background-color: rgba(0, 121, 252, 0.897);
@@ -156,7 +153,7 @@ button.magButton img {
 
 }
 
-#login {
+/* #login {
     background-color: rgba(0, 121, 252, 0.897);
     font-family: 'Anuphan', sans-serif;
     font-size: 3vmin;
@@ -169,96 +166,56 @@ button.magButton img {
     position: absolute;
     top: 3vmin;
     right: 1vmin;
+} */
+
+.home-link {
+    font-weight: 300;
+    font-size: 3vmin;
+    color: #007bff;
+    text-decoration: none;
+    margin-left: 20px; /* Add space between dublin bikes and home */
+}
+
+.home-link:hover {
+    text-decoration: underline;
 }
 
 #weather-container {
-    position: absolute;
-    top: 50px;  /* Adjust the distance from the top */
+    width: 80%;
+    max-width: 300px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    position: absolute; /* Allow free positioning inside the sidebar */
+    top: calc(20vmin + 12%); /* Ensure it appears below #search1 */
     left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 10px;
-    font-size: 1.2vw;
-    white-space: nowrap;
-}
-
-.weather {
-    font-size: 1.2vw;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.weather span {
-    font-size: 1.2vw;
-    font-weight: bold;
-    color: #007bff;  /* Set to blue */
-}
-
-.weather-details {
-    font-family: 'Anuphan', sans-serif;
-    font-size: 1.8vmin;
-    font-weight: 400;
-    color: rgba(0, 121, 252, 0.897);  /* Set to blue */
-    text-align: left;
-    padding-top: 0.5vmin;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 0.3vmin;
-}
-
-.weather-temp {
-    font-weight: 600;
-    font-size: 2.8vmin;
-    color: rgba(0, 121, 252, 0.897);
-}
-
-.weather-city {
-    font-weight: 600;
-    color: rgba(0, 121, 252, 0.897);
-}
-
-.weather-feels-like, .weather-humidity, .weather-wind {
-    font-weight: 400;
-    font-size: 1.4vmin;
-    color: rgba(0, 121, 252, 0.7);  /* Use a lighter color for detailed information */
-}
-
-/* Responsive layout */
-@media screen and (max-width: 768px) {
-    #weather-container {
-        left: 37vmin;
-        width: 20vmin;
-    }
+    transform: translateX(-50%); /* Center align */
     
-    .weather {
-        font-size: 2.2vmin;
-    }
-    
-    .weather-details {
-        font-size: 1.6vmin;
-    }
+    overflow: visible; /* Ensure content is not clipped */
+    z-index: 10; /* Ensure it is not covered by other elements */
 }
-
 
 /* Menu option bar */
 #menu-bar{
     background-color: rgba(0, 121, 252, 0.897);
     color: aliceblue;
     font-family: 'Anuphan', sans-serif;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 2vmin;
+    /* font-weight: bold; */
     letter-spacing: 0.1em;
     border-radius: 20px;
-    width: 200px;
-    height: 40px;
-    position: absolute;
+    width: 80%;
+    height: 4%;
     text-align: center;
-    margin-left: 650px;
-    line-height: 40px;
+    padding-top: 2%;
+    margin-top: -50%;
+    margin-left: 4vmin;
     border-color: aliceblue;
     cursor: pointer;
     z-index: 999;
@@ -267,7 +224,7 @@ button.magButton img {
 #menu-bar:hover{
     background-color: aliceblue;
     color: rgba(0, 121, 252, 0.897);
-    box-shadow: rgb(92, 88, 88);
+    box-shadow: 2px 2px 5px rgb(97, 93, 93);
 }
 
 
@@ -404,6 +361,22 @@ button.magButton img {
     padding: 4vmin;
     display: none;
 }
+
+.close-fav-button{
+    color: rgb(0, 121, 252, 1);
+    position: absolute;
+    font-size: 30px;
+    top:10px;
+    right: 15px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.close-fav-button:hover{
+    color:rgb(92, 88, 88);
+}
+
 
 .favorite-item{
     font-family: 'Anuphan', sans-serif;
