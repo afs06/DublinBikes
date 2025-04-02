@@ -325,14 +325,12 @@ function placeMarkers(map) {
         // Show availability when hovering over the station
         const infoWindow = new google.maps.InfoWindow({
             content: `<div class="info-box">
-                <h3>${station.name} </h3>
-                <div class="station-info">
+                <h3>${station.name}</h3>
                     <p>Station Nr. ${station.number} | ${station.address}</p>
-                </div>
-                <div class="availability">
+                    <div class="availability">
                     <p>Total Bikes available: ${station.available_bikes}</br>
                     Available Parking stands:  ${station.available_parking}</p>
-                </div>
+                    </div>
             </div>`,
             disableAutoPan: true
         });
@@ -384,10 +382,21 @@ function stationDetail(station) {
         document.body.appendChild(stationSidebar);
     }
 
+    //close the favorites sidebar if user clicks on station again
+    const favoriteSidebar = document.getElementById("favorite-list");
+    if (favoriteSidebar){
+        favoriteSidebar.style.display="none";
+    }
+
+    //Check if the station is already marked as favorite
+    const isFavorite = favorites.some(fav => fav.number === station.number);
+    //if it is marked as favorite use right icon
+    const starIcon = isFavorite ? "Media/starFilled.png" : "Media/starWhite.png";
+
     stationSidebar.innerHTML = `
         <h2>
             ${station.name}
-            <img src="Media/starWhite.png" alt="favorise" class="favorite-button-sidebar"/>
+            <img src="${starIcon}" alt="favorise" class="favorite-button-sidebar"/>
         </h2>
         <p>Station Nr. ${station.number}</p>
         <p> Total bikes available: ${station.available_bikes}</br>
@@ -396,9 +405,14 @@ function stationDetail(station) {
     stationSidebar.style.display = 'block';
 
     const favoriteButton = document.querySelector('.favorite-button-sidebar');
+    
     // Add click event directly to the button
-    favoriteButton.addEventListener('click', () => favoriteStation(station, favoriteButton));
-
+    favoriteButton.addEventListener('click', () =>{
+        favoriteStation(station, favoriteButton);
+        favoriteButton.src = favorites.some(fav => fav.number === station.number)
+        ? "Media/starFilled.png"
+        : "Media/starWhite.png";
+    }); 
 
     // Adding a close button
     const close_button = document.createElement("button");
@@ -412,6 +426,7 @@ function stationDetail(station) {
     stationSidebar.appendChild(close_button);
 }
 
+//to store the favorite stations
 const favorites = [];
 
 // Function to change favorite button to starFilled.png and add station to a list 
@@ -436,25 +451,74 @@ document.getElementById("menu-bar").addEventListener("click", () =>{
         favoriteSidebar = document.createElement("div");
         favoriteSidebar.id = "favorite-list";
         document.body.appendChild(favoriteSidebar);
+
+        // Add close button
+        const close_fav_list = document.createElement("button");
+        close_fav_list.classList.add("close-fav-button");
+        close_fav_list.innerHTML = "&times;";
+        close_fav_list.onclick = () => {
+            favoriteSidebar.style.display = "none";
+        };
+        favoriteSidebar.appendChild(close_fav_list);
+
+        // Add a container for the list
+        const listContainer = document.createElement("div");
+        listContainer.id = "favorite-list-content";
+        favoriteSidebar.appendChild(listContainer);
     }
 
-    // Toggle visibility
-    favoriteSidebar.style.display = 
-        favoriteSidebar.style.display === "none" || favoriteSidebar.style.display === ""
-        ? "block"
-        : "none";
+    // show favorite sidebar
+    favoriteSidebar.style.display = "block";
 
-    // Populate the list
-    favoriteSidebar.innerHTML = `<h2>Favorite Stations</h2>`;
+    // Update only the list content
+    const listContainer = document.getElementById("favorite-list-content");
+    listContainer.innerHTML = "<h2>Favorite Stations</h2>";
 
     if (favorites.length === 0) {
-        favoriteSidebar.innerHTML += `<p>No favorite Stations added</p>`;
+        listContainer.innerHTML += "<p>No favorite Stations added</p>";
     } else {
         favorites.forEach(station => {
-            favoriteSidebar.innerHTML += `
-            <div class="favorite-item">
-            <p>${station.name} | ${station.available_bikes} Bikes </p>
-            </div>`;
+            const favoriteItem = document.createElement("div");
+            favoriteItem.classList.add("favorite-item");
+    
+            // Create station name element
+            const stationName = document.createElement("p");
+            stationName.innerHTML = `${station.name} | ${station.available_bikes} Bikes`;
+    
+            // Get the existing info-box from placeMarkers function
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<div class="info-box">
+                    <h3>${station.name}</h3>
+                    <p>Station Nr. ${station.number} | ${station.address}</p>
+                    <div class="availability">
+                    <p>Total Bikes available: ${station.available_bikes}</br>
+                    Available Parking stands:  ${station.available_parking}</p>
+                    </div>
+                </div>`,
+                disableAutoPan: true
+            });
+    
+            // Find corresponding marker
+            const stationMarker = markers.find(marker => 
+                marker.position.lat() === station.latitude && 
+                marker.position.lng() === station.longitude
+            );
+    
+            // Show info-box on hover
+            stationName.addEventListener("mouseover", () => {
+                if (stationMarker) {
+                    infoWindow.open(stationMarker.getMap(), stationMarker);
+                }
+            });
+    
+            // Hide info-box when mouse leaves
+            stationName.addEventListener("mouseout", () => {
+                infoWindow.close();
+            });
+    
+            // Append elements
+            favoriteItem.appendChild(stationName);
+            listContainer.appendChild(favoriteItem);
         });
     }
 });
