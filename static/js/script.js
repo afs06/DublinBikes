@@ -41,13 +41,39 @@ async function fetchWeather(lat, lng) {
 // Return the corresponding icon based on the weather code
 function getWeatherIcon(iconCode) {
     const iconMap = {
-        "01d": "☀️", "01n": "🌙", "02d": "⛅", "02n": "☁️", 
-        "03d": "☁️", "03n": "☁️", "04d": "☁️", "04n": "☁️", 
-        "09d": "🌧️", "09n": "🌧️", "10d": "🌦️", "10n": "🌧️", 
-        "11d": "⛈️", "11n": "⛈️", "13d": "❄️", "13n": "❄️", 
-        "50d": "🌫️", "50n": "🌫️"
+        // Clear
+        "01d": "☀️",  
+        "01n": "🌙", 
+        
+        // Few clouds
+        "02d": "⛅", 
+        "02n": "☁️",  
+        
+        // Scattered/broken clouds
+        "03d": "☁️",  
+        "03n": "☁️",  
+        "04d": "☁️",  
+        "04n": "☁️", 
+        
+        // Rain
+        "09d": "🌧️",  
+        "09n": "🌧️",  
+        "10d": "🌦️",  
+        "10n": "🌧️",  
+        
+        // Thunderstorm
+        "11d": "⚡",  
+        "11n": "⚡",  
+        
+        // Snow
+        "13d": "❄️",  
+        "13n": "❄️",  
+        
+        // Mist/Fog
+        "50d": "〰️",  
+        "50n": "〰️"   
     };
-    return iconMap[iconCode] || "🌤️"; // Default icon
+    return iconMap[iconCode] || "☀️"; // Default icon
 }
 
 // Display weather information when clicking on the map
@@ -124,7 +150,7 @@ function addMagnificationControls(map) {
 function createMagControl(map) {
     const magButton = document.createElement("button");
     magButton.className = "magButton defMag";
-    magButton.innerHTML = '<img src="Media/magnificationIn.png">';
+    magButton.innerHTML = '<img src="../static/Media/magnificationIn.png">';
 
     magButton.addEventListener("click", () => {
         map.setCenter({ lat: 53.345430, lng: -6.263867 }); // Reset map center to Dublin
@@ -140,7 +166,7 @@ function createMagControl(map) {
 function createZoomMagControl(map) {
     const zoomMagButton = document.createElement("button");
     zoomMagButton.className = "magButton zoomMag";
-    zoomMagButton.innerHTML = '<img src="Media/magnificationOut.png">';
+    zoomMagButton.innerHTML = '<img src="../static/Media/magnificationOut.png">';
 
     zoomMagButton.addEventListener("click", () => {
         map.setZoom(14); 
@@ -197,7 +223,7 @@ function groupStations(stations) {
         return a.latitude - b.latitude;
     });
 
-    // Grouping stations into arrays of 20 (I calculated 115 total stations so roughly 5 equal groups)
+    // Grouping stations into arrays of 20 (I calculated 115 total stations so roughly 6 equal groups)
     const groupedStations = [];
     for (let i = 0; i < stations.length; i += 20) {
         const group = stations.slice(i, i + 20); // Get a group of 20 stations
@@ -364,11 +390,11 @@ function showMarkers(map) {
 // Function to display bike icon based on availability
 function getBikeIcon(availableBikes) {
     if (availableBikes < 5) {
-        return "Media/bikeRed.png";
+        return "../static/Media/bikeRed.png";
     } else if (availableBikes >= 5 && availableBikes < 10) {
-        return "Media/bikeOrange.png";
+        return "../static/Media/bikeOrange.png";
     } else {
-        return "Media/bikeGreen.png";
+        return "../static/Media/bikeGreen.png";
     }
 }
 
@@ -391,12 +417,12 @@ function stationDetail(station) {
     //Check if the station is already marked as favorite
     const isFavorite = favorites.some(fav => fav.number === station.number);
     //if it is marked as favorite use right icon
-    const starIcon = isFavorite ? "Media/starFilled.png" : "Media/starWhite.png";
+    const starIcon = isFavorite ? "../static/Media/starFilled.png" : "../static/Media/starWhite.png";
 
     stationSidebar.innerHTML = `
         <h2>
             ${station.name}
-            <img src="${starIcon}" alt="favorise" class="favorite-button-sidebar"/>
+            <img src="${starIcon}" alt="favorite" class="favorite-button-sidebar"/>
         </h2>
         <p>Station Nr. ${station.number}</p>
         <p> Total bikes available: ${station.available_bikes}</br>
@@ -410,8 +436,8 @@ function stationDetail(station) {
     favoriteButton.addEventListener('click', () =>{
         favoriteStation(station, favoriteButton);
         favoriteButton.src = favorites.some(fav => fav.number === station.number)
-        ? "Media/starFilled.png"
-        : "Media/starWhite.png";
+        ? "../static/Media/starFilled.png"
+        : "../static/Media/starWhite.png";
     }); 
 
     // Adding a close button
@@ -433,11 +459,11 @@ const favorites = [];
 function favoriteStation(station, buttonElement){
     if (!favorites.some(fav => fav.number === station.number)) {
         favorites.push(station);
-        buttonElement.src = "Media/starFilled.png"; // Change to filled star
+        buttonElement.src = "../static/Media/starFilled.png"; // Change to filled star
     } else {
         const index = favorites.findIndex(fav => fav.number === station.number);
         favorites.splice(index, 1);
-        buttonElement.src = "Media/starWhite.png"; // Change back to unfilled
+        buttonElement.src = "../static/Media/starWhite.png"; // Change back to unfilled
     }
 }
 

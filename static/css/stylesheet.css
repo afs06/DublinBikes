@@ -1,60 +1,50 @@
 /* Using vmin generally to create responsive elements on HTML */
-
-body {
-    
-    background-color:rgb(237, 245, 248);
+body {    
+   background-color:rgb(237, 245, 248);
 }
 
 .responsive {
     max-width: 70px;
-    margin-top: 5px;
     height: 5vmin;
-
-
-
+    object-fit: contain;
 }
+
 .title {
-    font-family: 'Anuphan', sans-serif;
     color: rgba(0, 121, 252, 0.897);
     font-weight: 300;
     font-size: 4vmin;
     letter-spacing: -2px;
-    margin-left: 10px; /* Add some spacing after the logo */
-    /* Remove position: absolute */
+    line-height: 1; /* Removes any extra space below text */
+    margin: 0; 
+    padding-bottom: 0.1em
 }
 
 html, body{
-    margin:0;
+    font-family: 'Anuphan', sans-serif;
 }
 
 
 h1 {
-    border-bottom: 1px solid;
-    color: rgba(0, 121, 252, 0.897);
-    width: 100%;
-    margin-top: 0;
-    margin-bottom: 0;
-    background-color: rgb(237, 245, 248);
-    height: 12vmin;
     display: flex;
-    align-items: center;
-    padding: 0 20px;
-    padding-right: 2vmin;
+    align-items: flex-end;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8vmin;
+    background-color: rgba(237, 245, 248, 0.8); 
+    z-index: 3; 
+    border-bottom: 1px solid rgba(0, 121, 252, 0.5); /* Semi-transparent */
 }
 
 #bike{
-    padding-bottom: 2vmin;
+    padding-left: 3vmin;
+    margin-bottom: 1vmin;
+
 }
 
-#map {
-    height: 100%;
-    width: calc(100% - 25%);
-    color: rgba(0, 121, 252, 0.897);
-    float: right;
-    display: block;  
-    background-color:rgb(230, 243, 248); 
-   
-}
+
 button.zoomMag {
     bottom: 2vmin;  
     right: 3vmin; 
@@ -81,61 +71,52 @@ button.magButton img {
     max-height: 100%; 
 }
 
-#container{
-    position: relative;
-    width: 100%;
-    height: calc(100vh - 12vmin);
-    min-height: 100%;
-    text-align: center;
-    margin-right: 0px;
-    float: right;
-    display: flex;
-}
+
 
 #sidebar {
-    border-right: 1px solid;
-    height: 100%;
-    width: 25%;
-    float: left;
-    color: rgba(0, 121, 252, 0.897);
-    background-color: rgb(230, 241, 247);
-    position: relative;
+    position: fixed;
+    top: 8vmin; /* Below header */
+    left: 0;
+    width: 20%;
+    height: calc(100% - 8vmin);
+    background-color: rgba(230, 241, 247, 0.75); /* .75 opacity */
+    z-index: 2; /* Float above map but below header */
+    overflow-y: auto;
+    border-right: 1px solid rgba(0, 121, 252, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
+    padding: 2vmin 0;
+    box-sizing: border-box;
+}
 
+#map {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: #e6f3f8; /* Fallback if map loads slowly */
+    z-index: 1 !important;
+    display: block !important;
+    visibility: visible !important;
 }
 
 #search1 {
     border: 1px solid;
     color: rgba(0, 121, 252, 0.897);
-    background-color:rgb(237, 245, 248);
+    background-color: rgb(237, 245, 248);
     font-family: 'Anuphan', sans-serif;
     font-size: 2vmin;
     border-radius: 15px;
-    margin-top: 20vmin;
-    height: 10%;
+    margin: 2vmin 0;
+    height: 6vmin;
     width: 80%;
     text-overflow: ellipsis;
     text-align: center;
-    margin-bottom: 20px;
+    padding: 0 1vmin;
+    box-sizing: border-box;
 }
-/* 
-#search2 {
-    border: 1px solid;
-    color: rgba(0, 121, 252, 0.897);
-    background-color:rgb(237, 245, 248);
-    font-family: 'Anuphan', sans-serif;
-    font-size: 2vmin;
-    border-radius: 15px;
-    margin-top: 5vmin;
-    height: 10%;
-    width: 80%;
-    text-overflow: ellipsis;
-
-} */
 
 #book {
     background-color: rgba(0, 121, 252, 0.897);
@@ -170,10 +151,12 @@ button.magButton img {
 
 .home-link {
     font-weight: 300;
-    font-size: 3vmin;
-    color: #007bff;
+    font-size: 2vmin;
+    color: rgba(0, 121, 252, 0.897);
     text-decoration: none;
-    margin-left: 20px; /* Add space between dublin bikes and home */
+    line-height: 1;
+    padding-bottom: .4em; 
+    margin-left: 3vmin;
 }
 
 .home-link:hover {
@@ -183,48 +166,46 @@ button.magButton img {
 #weather-container {
     width: 80%;
     max-width: 300px;
+    min-height: 100px;
+    margin: 2vmin 0;
     padding: 15px;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 10px;
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
-    position: absolute; /* Allow free positioning inside the sidebar */
-    top: calc(20vmin + 12%); /* Ensure it appears below #search1 */
-    left: 50%;
-    transform: translateX(-50%); /* Center align */
-    
-    overflow: visible; /* Ensure content is not clipped */
-    z-index: 10; /* Ensure it is not covered by other elements */
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 2vmin;
 }
 
 /* Menu option bar */
-#menu-bar{
+#menu-bar {
+    width: 80%;
+    height: 6vmin;
+    margin: 2vmin 0;
+    padding: 1.5vmin 0;
     background-color: rgba(0, 121, 252, 0.897);
     color: aliceblue;
     font-family: 'Anuphan', sans-serif;
-    font-size: 2vmin;
-    /* font-weight: bold; */
+    font-size: 1vmin;
     letter-spacing: 0.1em;
     border-radius: 20px;
-    width: 80%;
-    height: 4%;
-    text-align: center;
-    padding-top: 2%;
-    margin-top: -50%;
-    margin-left: 4vmin;
-    border-color: aliceblue;
+    border: 1px solid aliceblue;
     cursor: pointer;
-    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    
 }
 
-#menu-bar:hover{
+#menu-bar:hover {
     background-color: aliceblue;
     color: rgba(0, 121, 252, 0.897);
-    box-shadow: 2px 2px 5px rgb(97, 93, 93);
+    box-shadow: 2px 2px 5px rgba(97, 93, 93, 0.3);
 }
 
 
@@ -293,14 +274,12 @@ button.magButton img {
     font-family: 'Anuphan', sans-serif;
     color: rgb(230, 241, 247);
     background-color: rgba(0, 121, 252, 1); 
-    border-radius: 5px;
     border: 1px solid;
-    top: 12vmin;
+    top: 8vmin;
     left: 0; /* Position of the sidebar */
-    width: 25%; /* Try 25% */
-    height: calc(100vh - 12vmin);
+    width: 20%; /* Try 25% */
+    height: calc(100vh - 8vmin);
     border-left: 3px;
-    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
     padding: 4vmin;
     z-index: 999;
     overflow-y: auto;
@@ -315,7 +294,7 @@ button.magButton img {
 
 #station-detail p {
     margin: 5px 0;
-    color: rgbrgb(230, 241, 247);
+    color: rgb(230, 241, 247);
 
 }
 
@@ -349,17 +328,16 @@ button.magButton img {
     position: fixed;
     font-family: 'Anuphan', sans-serif;
     color:rgba(0, 121, 252, 1) ;
-    background-color: rgb(230, 241, 247);    
-    border-radius: 5px;
-    border: 1px solid;
-    top: 12vmin;
+    background-color: rgb(245, 249, 253);    
+    border: 1px solid rgba(0, 121, 252, 0.3);
+    top: 8vmin;
     left: 0; /* Position of the sidebar */
-    width: 25%; /* Try 25% */
-    height: calc(100vh - 12vmin);
+    width: 20%; /* Try 25% */
+    height: calc(100vh - 8vmin);
     border-left: 3px; 
-    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
     padding: 4vmin;
     display: none;
+    z-index: 1000;
 }
 
 .close-fav-button{
@@ -393,3 +371,4 @@ button.magButton img {
     font-weight: bold;
     margin-left: 20px;
 }
+
