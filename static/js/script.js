@@ -485,7 +485,7 @@ function stationDetail(station) {
 
                 const ctx = document.getElementById(`chart-${station.number}`);
                 if (ctx) {
-                    new Chart(ctx, {
+                    new window.Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: days,
@@ -496,7 +496,7 @@ function stationDetail(station) {
                             }]
                         },
                         options: {
-                            responsive: false,
+                            responsive: true,
                             plugins: { legend: { display: false } },
                             scales: { 
                                 y: { border:{color:'#FFFFFF',},grid:{display:false,},beginAtZero: true,ticks:{color: '#FFFFFF'}},
