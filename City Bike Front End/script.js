@@ -345,7 +345,7 @@ function placeMarkers(map) {
         
             map.panTo({ lat: station.latitude, lng: station.longitude });
         
-        });
+            });
     }
 }
 
@@ -401,6 +401,10 @@ function stationDetail(station) {
         <p>Station Nr. ${station.number}</p>
         <p> Total bikes available: ${station.available_bikes}</br>
             Available Parking stands:  ${station.available_parking}</p>
+        <div class="predictions-bikes"> 
+            <p>Available bikes per weekday </p> 
+            <canvas id="chart-${station.number}" width="400vmin" height="250vmin"></canvas>
+        </div>
     `;
     stationSidebar.style.display = 'block';
 
@@ -424,6 +428,64 @@ function stationDetail(station) {
 
     // Adding the close button to the sidebar
     stationSidebar.appendChild(close_button);
+
+    //Fetching prediction data from flask and display bar chart
+    setTimeout(() => {
+        const canvasId = `chart-${station.number}`;
+        const canvasEl = document.getElementById(canvasId);
+        
+        if (!canvasEl) {
+            console.warn(`Canvas ${canvasId} not found`);
+            return;
+        }
+
+        fetch(`http://127.0.0.1:5000/predict?station_id=${station.number}`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            credentials: 'omit'
+        })
+        
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                const preds = data.predictions;
+                const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                const values = days.map((_, i) => preds[i.toString()]);
+
+                const ctx = document.getElementById(`chart-${station.number}`);
+                if (ctx) {
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: days,
+                            datasets: [{
+                                label: "Predicted Bikes",
+                                data: values,
+                                backgroundColor: "aliceblue"
+                            }]
+                        },
+                        options: {
+                            responsive: false,
+                            plugins: { legend: { display: false } },
+                            scales: { 
+                                y: { border:{color:'#FFFFFF',},grid:{display:false,},beginAtZero: true,ticks:{color: '#FFFFFF'}},
+                                x:{ticks:{color:'#FFFFFF'},border:{color:'#FFFFFF',},grid:{display:false,},} 
+                            }
+                        }
+                    });
+                } else {
+                    console.warn("Chart canvas not found for station", station.number);
+                }
+            })
+            .catch(error => {
+                console.error("Failed to fetch prediction data:", error);
+            });
+    }, 300); // Give a short delay to make sure canvas is rendered
 }
 
 //to store the favorite stations
