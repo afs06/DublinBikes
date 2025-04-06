@@ -315,8 +315,16 @@ button.magButton img {
 
 #station-detail p {
     margin: 5px 0;
-    color: rgbrgb(230, 241, 247);
+    color: rgb(230, 241, 247);
 
+}
+.predictions-bikes{
+    margin-top: 10px;
+}
+
+.predictions-bikes p{
+    text-align: center;
+    font-weight: bold;
 }
 
 .favorite-button-sidebar{
