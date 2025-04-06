@@ -6,7 +6,7 @@ body, html {
 }
 
 .home-container {
-    background-image: url('Media/dublinbike1.jpeg');
+    background-image: url('../Media/dublinbike1.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
