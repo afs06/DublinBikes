@@ -71,6 +71,10 @@ def home():
 def homepage():
     return render_template("homepage.html")
 
+@app.route("/help")
+def help_page():
+    return render_template("help.html")
+
 # Basic weather route (returns raw OpenWeatherMap data)
 @app.route("/weather", methods=["GET"])
 def get_weather():
