@@ -57,7 +57,7 @@ def get_formatted_weather(city=CITY, country_code=COUNTRY_CODE):
     
     return None
 
-app = Flask(__name__, static_url_path='/static')
+# app = Flask(__name__, static_url_path='/static')
 
 # Serve static media files
 @app.route('/media/<path:filename>')
