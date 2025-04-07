@@ -101,7 +101,7 @@ async function initMap() {
         disableDefaultUI: true,
     });
 
-
+    
     // Add magnification buttons
     addMagnificationControls(map);
 
@@ -610,4 +610,15 @@ document.getElementById("menu-bar").addEventListener("click", () =>{
         });
     }
 });
+});
+
+// Make sure the map is initialized after the page has fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we are on the map page
+    if (document.getElementById('map')) {
+        // Check if the Google Maps API has been loaded
+        if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
+            initMap();
+        }
+    }
 });
