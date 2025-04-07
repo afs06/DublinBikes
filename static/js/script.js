@@ -100,8 +100,10 @@ async function initMap() {
         zoomControl: false,
         disableDefaultUI: true,
     });
+    // Initializing search function
+    initSearch(map);
 
-
+    
     // Add magnification buttons
     addMagnificationControls(map);
 
@@ -125,6 +127,56 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchWeather(53.3498, -6.2603);  // Default: display Dublin's weather
 });
 
+function initSearch(map) {
+    // Fetching search input element 
+    const input = document.getElementById("search1");
+    
+    // Creating autocomplete functionality using Google's Autocomplete 
+    const autocomplete = new google.maps.places.Autocomplete(input);
+    
+    // Bias search results to current map viewport i.e. relevant location matches
+    autocomplete.bindTo('bounds', map);
+    
+    // Handle place selection
+    autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        
+        // Check if place has geometry data
+        if (!place.geometry || !place.geometry.location) {
+            console.log("No geometry data for this place");
+            return;
+        }
+        // For situations where user enters location name when in zoomed out view
+        // i.e. group markers are visible
+        const inGroupView = groupMarkers.some(marker => marker.getMap() !== null);
+        
+        // Move map to the selected location and set zoom 16
+        map.setCenter(place.geometry.location);
+        map.setZoom(16);
+
+        // Given page is in zoomed out view (group markers), changes back to default (stations visible) view
+        if (inGroupView) {
+            showMarkers(map);
+            hideGroupMarkers();
+        }
+
+        // Empty search bar after so that is is easy to enter another location without having to delete previous search
+        input.value = '';
+
+    });
+    
+    // Prevent form submission on Enter key (e.g. basic edge case handling)
+    input.addEventListener('keydown', (e) => {
+        // Stops default form submission i.e. page reloading on enter
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            // Clear search when enter is pressed but no autocomplete suggestion was selected
+            if (!autocomplete.getPlace()) {
+                input.value = '';
+            }
+        }
+    });
+}
 
 // Function to add magnification controls
 function addMagnificationControls(map) {
@@ -610,4 +662,15 @@ document.getElementById("menu-bar").addEventListener("click", () =>{
         });
     }
 });
+});
+
+// Make sure the map is initialized after the page has fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we are on the map page
+    if (document.getElementById('map')) {
+        // Check if the Google Maps API has been loaded
+        if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
+            initMap();
+        }
+    }
 });
