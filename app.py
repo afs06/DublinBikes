@@ -14,7 +14,7 @@ CITY = "Dublin"
 COUNTRY_CODE = "IE"
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&appid={API_KEY}&units=metric"
 
-# First, ensure both models are loaded
+# Ensure both models are loaded correctly
 bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
 dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
 
@@ -50,9 +50,9 @@ def predict_hourly(station_id):
             # Convert to numpy array for prediction
             input_array = np.array(features).reshape(1, -1)
             
-            # Predict available bikes and docks
-            bike_prediction = max(0, int(bike_model.predict(input_array)[0]))
-            dock_prediction = max(0, int(dock_model.predict(input_array)[0]))
+            # Predict available bikes and docks using the correct model variable
+            bike_prediction = max(0, int(bike_model.predict(input_array)[0]))  # Use bike_model
+            dock_prediction = max(0, int(dock_model.predict(input_array)[0]))  # Use dock_model
             
             hourly_predictions.append({
                 "hour": hour,
@@ -173,6 +173,10 @@ def search_weather():
     
     return jsonify({"error": f"Unable to find weather data for {location}"}), 404
 
+# Ensure both models are loaded at the beginning
+bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
+dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
+
 # Defining route for predictions
 @app.route("/predict", methods=["GET"])
 def predict():
@@ -191,6 +195,7 @@ def predict():
         predictions = {}
 
         for day_of_week in range(7):
+            # Prepare input features for both models
             input_features = [
                 station_id,
                 day_of_week,
@@ -198,8 +203,17 @@ def predict():
                 openweather_data['average_temperature'],
             ]
             input_array = np.array(input_features).reshape(1, -1)
-            prediction = model.predict(input_array)
-            predictions[day_of_week] = int(prediction[0])
+            
+            # Predict available bikes using bike_model
+            bike_prediction = bike_model.predict(input_array)
+            
+            # Predict available docks using dock_model
+            dock_prediction = dock_model.predict(input_array)
+            
+            predictions[day_of_week] = {
+                "available_bikes": int(bike_prediction[0]),
+                "available_docks": int(dock_prediction[0])
+            }
         
         response = jsonify({"predictions": predictions})
         response.headers.add("Access-Control-Allow-Origin", "*")
