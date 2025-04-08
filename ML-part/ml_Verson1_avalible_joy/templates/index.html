@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Availability Prediction</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .station-selector {
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            height: 400px;
+        }
+        .weather-info {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 8px;
+            font-size: 16px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .error-message {
+            color: #cc0000;
+            background-color: #ffeeee;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            margin-bottom: 20px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bike Availability Prediction</h1>
+        
+        <div class="station-selector">
+            <label for="station-select">Select a Station: </label>
+            <select id="station-select">
+                <option value="">-- Select Station --</option>
+                {% for station_id in station_ids %}
+                <option value="{{ station_id }}">Station {{ station_id }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="error-message" id="error-display"></div>
+        <div class="loading" id="loading-indicator">Loading predictions...</div>
+        
+        <div class="weather-info" id="weather-display" style="display: none;">
+            <h3>Current Weather Conditions</h3>
+            <p>Temperature: <span id="temperature"></span>°C</p>
+            <p>Humidity: <span id="humidity"></span>%</p>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="prediction-chart"></canvas>
+        </div>
+    </div>
+    
+    <script>
+        // Chart initialization
+        let myChart = null;
+        const errorDisplay = document.getElementById('error-display');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const weatherDisplay = document.getElementById('weather-display');
+        
+        // Handle station selection
+        document.getElementById('station-select').addEventListener('change', function() {
+            const stationId = this.value;
+            if (stationId) {
+                // Clear previous data and show loading
+                errorDisplay.style.display = 'none';
+                weatherDisplay.style.display = 'none';
+                loadingIndicator.style.display = 'block';
+                fetchPredictions(stationId);
+            }
+        });
+        
+        // Fetch predictions for selected station
+        function fetchPredictions(stationId) {
+            fetch(`/predict/${stationId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server responded with status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingIndicator.style.display = 'none';
+                    if (data.error) {
+                        showError(data.error);
+                    } else {
+                        displayPredictions(data);
+                        displayWeather(data.weather);
+                    }
+                })
+                .catch(error => {
+                    loadingIndicator.style.display = 'none';
+                    showError(`Error fetching predictions: ${error.message}`);
+                    console.error('Error details:', error);
+                });
+        }
+        
+        // Display error message
+        function showError(message) {
+            errorDisplay.textContent = message;
+            errorDisplay.style.display = 'block';
+            // If there's a chart, clear it
+            if (myChart) {
+                myChart.destroy();
+                myChart = null;
+            }
+        }
+        
+        // Display weather information
+        function displayWeather(weather) {
+            document.getElementById('temperature').textContent = weather.average_temperature.toFixed(1);
+            document.getElementById('humidity').textContent = weather.humidity;
+            weatherDisplay.style.display = 'block';
+        }
+        
+        // Display predictions in chart
+        function displayPredictions(data) {
+            const ctx = document.getElementById('prediction-chart').getContext('2d');
+            
+            // Prepare chart data
+            const hours = data.predictions.map(p => `${p.hour}:00`);
+            const bikeCount = data.predictions.map(p => p.predicted_bikes);
+            
+            // Destroy existing chart if it exists
+            if (myChart) {
+                myChart.destroy();
+            }
+            
+            // Create new chart
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: `Predicted Available Bikes for Station ${data.station_id}`,
+                        data: bikeCount,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Available Bikes'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Hour of Day'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Bike Availability Forecast for ${data.date}`,
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Verify the server is running correctly on page load
+        fetch('/debug')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server status:', data);
+                if (!data.model_loaded) {
+                    console.warn('Model not loaded on server. Using dummy predictions.');
+                }
+            })
+            .catch(error => {
+                console.error('Server health check failed:', error);
+            });
+    </script>
+</body>
+</html>
