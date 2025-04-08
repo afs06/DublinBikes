@@ -450,7 +450,8 @@ function getBikeIcon(availableBikes) {
     }
 }
 
-// Function for station detail when clicking a station (open sidebar)
+// Modify stationDetail function to display hourly forecast charts
+
 function stationDetail(station) {
     let stationSidebar = document.getElementById("station-detail");
     // Create sidebar if it doesn't exist
@@ -460,15 +461,15 @@ function stationDetail(station) {
         document.body.appendChild(stationSidebar);
     }
 
-    //close the favorites sidebar if user clicks on station again
+    // Close the favorites sidebar if user clicks on station again
     const favoriteSidebar = document.getElementById("favorite-list");
     if (favoriteSidebar){
         favoriteSidebar.style.display="none";
     }
 
-    //Check if the station is already marked as favorite
+    // Check if the station is already marked as favorite
     const isFavorite = favorites.some(fav => fav.number === station.number);
-    //if it is marked as favorite use right icon
+    // If it is marked as favorite use right icon
     const starIcon = isFavorite ? "../static/Media/starFilled.png" : "../static/Media/starWhite.png";
 
     stationSidebar.innerHTML = `
@@ -477,11 +478,19 @@ function stationDetail(station) {
             <img src="${starIcon}" alt="favorite" class="favorite-button-sidebar"/>
         </h2>
         <p>Station Nr. ${station.number}</p>
-        <p> Total bikes available: ${station.available_bikes}</br>
-            Available Parking stands:  ${station.available_parking}</p>
-        <div class="predictions-bikes"> 
-            <p>Available bikes per weekday </p> 
-            <canvas id="chart-${station.number}" width="400vmin" height="250vmin"></canvas>
+        <p>Total bikes available: ${station.available_bikes}</br>
+           Available Parking stands: ${station.available_parking}</p>
+        
+        <!-- Add forecast chart container -->
+        <div class="predictions-container">
+            <div class="predictions-bikes"> 
+                <p>Available Bikes Prediction</p> 
+                <canvas id="bikes-chart-${station.number}" width="380" height="200"></canvas>
+            </div>
+            <div class="predictions-docks"> 
+                <p>Available Docks Prediction</p> 
+                <canvas id="docks-chart-${station.number}" width="380" height="200"></canvas>
+            </div>
         </div>
     `;
     stationSidebar.style.display = 'block';
@@ -507,63 +516,91 @@ function stationDetail(station) {
     // Adding the close button to the sidebar
     stationSidebar.appendChild(close_button);
 
-    //Fetching prediction data from flask and display bar chart
+    // Get hourly forecast data and display charts
     setTimeout(() => {
-        const canvasId = `chart-${station.number}`;
-        const canvasEl = document.getElementById(canvasId);
-        
-        if (!canvasEl) {
-            console.warn(`Canvas ${canvasId} not found`);
-            return;
-        }
-
-        fetch(`http://127.0.0.1:5000/predict?station_id=${station.number}`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            credentials: 'omit'
-        })
-        
-            .then(res => {
-                return res.json();
-            })
+        // Fetch forecast data from backend
+        fetch(`http://127.0.0.1:5000/predict/${station.number}`)
+            .then(response => response.json())
             .then(data => {
-                const preds = data.predictions;
-                const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-                const values = days.map((_, i) => preds[i.toString()]);
-
-                const ctx = document.getElementById(`chart-${station.number}`);
-                if (ctx) {
-                    new window.Chart(ctx, {
+                // Prepare chart data
+                const hours = data.map(d => `${d.hour}:00`);
+                const bikeValues = data.map(d => d.available_bikes);
+                const dockValues = data.map(d => d.available_docks);
+                
+                // Create available bikes chart
+                const bikesCtx = document.getElementById(`bikes-chart-${station.number}`);
+                if (bikesCtx) {
+                    new Chart(bikesCtx, {
                         type: 'bar',
                         data: {
-                            labels: days,
+                            labels: hours,
                             datasets: [{
-                                label: "Predicted Bikes",
-                                data: values,
-                                backgroundColor: "aliceblue"
+                                label: "Available Bikes",
+                                data: bikeValues,
+                                backgroundColor: "rgba(54, 162, 235, 0.7)",
+                                borderColor: "rgba(54, 162, 235, 1)",
+                                borderWidth: 1
                             }]
                         },
                         options: {
                             responsive: true,
                             plugins: { legend: { display: false } },
                             scales: { 
-                                y: { border:{color:'#FFFFFF',},grid:{display:false,},beginAtZero: true,ticks:{color: '#FFFFFF'}},
-                                x:{ticks:{color:'#FFFFFF'},border:{color:'#FFFFFF',},grid:{display:false,},} 
+                                y: { 
+                                    border:{color:'#FFFFFF'},
+                                    grid:{display:false},
+                                    beginAtZero: true,
+                                    ticks:{color: '#FFFFFF'}
+                                },
+                                x:{
+                                    ticks:{color:'#FFFFFF'},
+                                    border:{color:'#FFFFFF'},
+                                    grid:{display:false}
+                                } 
                             }
                         }
                     });
-                } else {
-                    console.warn("Chart canvas not found for station", station.number);
+                }
+                
+                // Create available docks chart
+                const docksCtx = document.getElementById(`docks-chart-${station.number}`);
+                if (docksCtx) {
+                    new Chart(docksCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: hours,
+                            datasets: [{
+                                label: "Available Docks",
+                                data: dockValues,
+                                backgroundColor: "rgba(255, 99, 132, 0.7)",
+                                borderColor: "rgba(255, 99, 132, 1)",
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { display: false } },
+                            scales: { 
+                                y: { 
+                                    border:{color:'#FFFFFF'},
+                                    grid:{display:false},
+                                    beginAtZero: true,
+                                    ticks:{color: '#FFFFFF'}
+                                },
+                                x:{
+                                    ticks:{color:'#FFFFFF'},
+                                    border:{color:'#FFFFFF'},
+                                    grid:{display:false}
+                                } 
+                            }
+                        }
+                    });
                 }
             })
             .catch(error => {
-                console.error("Failed to fetch prediction data:", error);
+                console.error("Error fetching prediction data:", error);
             });
-    }, 300); // Give a short delay to make sure canvas is rendered
+    }, 300); // Short delay to ensure canvas is rendered
 }
 
 //to store the favorite stations

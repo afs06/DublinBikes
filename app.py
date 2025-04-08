@@ -14,10 +14,59 @@ CITY = "Dublin"
 COUNTRY_CODE = "IE"
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&appid={API_KEY}&units=metric"
 
-# open ML model
-modelname = "ML-part/bike_availability_model_v3.pkl"
-with open(modelname, "rb") as file:
-    model = pickle.load(file)
+# First, ensure both models are loaded
+bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
+dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
+
+# Add new prediction API endpoint
+@app.route("/predict/<station_id>", methods=["GET"])
+def predict_hourly(station_id):
+    try:
+        # Get the current date
+        date = datetime.datetime.now()
+        day_of_week = date.weekday()  # 0-6, 0 is Monday
+        
+        # Get weather data
+        weather_data = get_weather_forecast()
+        
+        # Prepare prediction data for 24 hours
+        hourly_predictions = []
+        
+        for hour in range(24):
+            # Prepare features needed for prediction
+            is_weekend = 1 if day_of_week >= 5 else 0
+            is_rush_hour = 1 if (7 <= hour <= 9) or (17 <= hour <= 19) else 0
+            
+            features = [
+                int(station_id),
+                day_of_week,
+                hour,
+                weather_data['humidity'],
+                weather_data['average_temperature'],
+                is_weekend,
+                is_rush_hour
+            ]
+            
+            # Convert to numpy array for prediction
+            input_array = np.array(features).reshape(1, -1)
+            
+            # Predict available bikes and docks
+            bike_prediction = max(0, int(bike_model.predict(input_array)[0]))
+            dock_prediction = max(0, int(dock_model.predict(input_array)[0]))
+            
+            hourly_predictions.append({
+                "hour": hour,
+                "available_bikes": bike_prediction,
+                "available_docks": dock_prediction
+            })
+        
+        response = jsonify(hourly_predictions)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+        
+    except Exception as e:
+        print(f"Error in prediction: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 # Functions for the prediction
 def get_weather_forecast():
