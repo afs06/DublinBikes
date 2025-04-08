@@ -15,7 +15,7 @@ COUNTRY_CODE = "IE"
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&appid={API_KEY}&units=metric"
 
 # open ML model
-modelname = "ML-part/bike_availability_model_v3.pkl"
+modelname = "ML-part/ml_Verson1_avalible_joy/bike_availability_model_v1.pkl"
 with open(modelname, "rb") as file:
     model = pickle.load(file)
 
