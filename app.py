@@ -14,12 +14,6 @@ CITY = "Dublin"
 COUNTRY_CODE = "IE"
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&appid={API_KEY}&units=metric"
 
-<<<<<<< HEAD
-# open ML model
-modelname = "ML-part/bike_availability_model_v3.pkl"
-with open(modelname, "rb") as file:
-    model = pickle.load(file)
-=======
 # Ensure both models are loaded correctly
 bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
 dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
@@ -73,7 +67,6 @@ def predict_hourly(station_id):
     except Exception as e:
         print(f"Error in prediction: {str(e)}")
         return jsonify({"error": str(e)}), 500
->>>>>>> 640e3f139be775941647bede05b1568a5e3bf49c
 
 # Functions for the prediction
 def get_weather_forecast():
@@ -180,13 +173,10 @@ def search_weather():
     
     return jsonify({"error": f"Unable to find weather data for {location}"}), 404
 
-<<<<<<< HEAD
-=======
 # Ensure both models are loaded at the beginning
 bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
 dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
 
->>>>>>> 640e3f139be775941647bede05b1568a5e3bf49c
 # Defining route for predictions
 @app.route("/predict", methods=["GET"])
 def predict():
@@ -205,10 +195,7 @@ def predict():
         predictions = {}
 
         for day_of_week in range(7):
-<<<<<<< HEAD
-=======
             # Prepare input features for both models
->>>>>>> 640e3f139be775941647bede05b1568a5e3bf49c
             input_features = [
                 station_id,
                 day_of_week,
@@ -216,10 +203,6 @@ def predict():
                 openweather_data['average_temperature'],
             ]
             input_array = np.array(input_features).reshape(1, -1)
-<<<<<<< HEAD
-            prediction = model.predict(input_array)
-            predictions[day_of_week] = int(prediction[0])
-=======
             
             # Predict available bikes using bike_model
             bike_prediction = bike_model.predict(input_array)
@@ -231,7 +214,6 @@ def predict():
                 "available_bikes": int(bike_prediction[0]),
                 "available_docks": int(dock_prediction[0])
             }
->>>>>>> 640e3f139be775941647bede05b1568a5e3bf49c
         
         response = jsonify({"predictions": predictions})
         response.headers.add("Access-Control-Allow-Origin", "*")
@@ -239,6 +221,7 @@ def predict():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
