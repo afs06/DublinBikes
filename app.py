@@ -15,11 +15,14 @@ COUNTRY_CODE = "IE"
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&appid={API_KEY}&units=metric"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # open ML model
 modelname = "ML-part/bike_availability_model_v3.pkl"
 with open(modelname, "rb") as file:
     model = pickle.load(file)
 =======
+=======
+>>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
 # Ensure both models are loaded correctly
 bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
 dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
@@ -73,6 +76,9 @@ def predict_hourly(station_id):
     except Exception as e:
         print(f"Error in prediction: {str(e)}")
         return jsonify({"error": str(e)}), 500
+<<<<<<< HEAD
+>>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
+=======
 >>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
 
 # Functions for the prediction
@@ -181,11 +187,17 @@ def search_weather():
     return jsonify({"error": f"Unable to find weather data for {location}"}), 404
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
 # Ensure both models are loaded at the beginning
 bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
 dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
 
+<<<<<<< HEAD
+>>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
+=======
 >>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
 # Defining route for predictions
 @app.route("/predict", methods=["GET"])
