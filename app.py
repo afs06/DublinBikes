@@ -16,6 +16,7 @@ URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&a
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # open ML model
 modelname = "ML-part/bike_availability_model_v3.pkl"
 with open(modelname, "rb") as file:
@@ -23,6 +24,8 @@ with open(modelname, "rb") as file:
 =======
 =======
 >>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
+=======
+>>>>>>> 992b28a8880dd2b7cf2033e154e74887e22b2de3
 # Ensure both models are loaded correctly
 bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
 dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
@@ -77,9 +80,12 @@ def predict_hourly(station_id):
         print(f"Error in prediction: {str(e)}")
         return jsonify({"error": str(e)}), 500
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
 =======
 >>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
+=======
+>>>>>>> 992b28a8880dd2b7cf2033e154e74887e22b2de3
 
 # Functions for the prediction
 def get_weather_forecast():
@@ -188,17 +194,23 @@ def search_weather():
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
+=======
+>>>>>>> 992b28a8880dd2b7cf2033e154e74887e22b2de3
 # Ensure both models are loaded at the beginning
 bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
 dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
 =======
 >>>>>>> 985e84136db0f58a712b246fbf9aeb1f226763b2
+=======
+>>>>>>> 992b28a8880dd2b7cf2033e154e74887e22b2de3
 # Defining route for predictions
 @app.route("/predict", methods=["GET"])
 def predict():
