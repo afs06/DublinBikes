@@ -224,6 +224,10 @@ body {
      margin-bottom: 8px;
      text-align: center;
  }
+
+ .info-box p{
+    text-align: center;
+ }
  /* To remove the close button "X" */
  .gm-ui-hover-effect {
      display: none !important;
