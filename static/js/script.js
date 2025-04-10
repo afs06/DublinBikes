@@ -202,7 +202,7 @@ function addMagnificationControls(map) {
 function createMagControl(map) {
     const magButton = document.createElement("button");
     magButton.className = "magButton defMag";
-    magButton.innerHTML = '<img src="../static/Media/magnificationIn.png">';
+    magButton.innerHTML = '<img src="../static/Media/magnificationIn.png" alt="Default magnification button">';
 
     magButton.addEventListener("click", () => {
         map.setCenter({ lat: 53.345430, lng: -6.263867 }); // Reset map center to Dublin
@@ -218,7 +218,7 @@ function createMagControl(map) {
 function createZoomMagControl(map) {
     const zoomMagButton = document.createElement("button");
     zoomMagButton.className = "magButton zoomMag";
-    zoomMagButton.innerHTML = '<img src="../static/Media/magnificationOut.png">';
+    zoomMagButton.innerHTML = '<img src="../static/Media/magnificationOut.png" alt="Zoomed out magnification button">';
 
     zoomMagButton.addEventListener("click", () => {
         map.setZoom(14); 
