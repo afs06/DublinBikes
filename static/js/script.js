@@ -1,6 +1,6 @@
 // Add weather functionality
 async function fetchWeather(lat, lng) {
-    const apiUrl = `http://127.0.0.1:5000/weather?lat=${lat}&lon=${lng}`;
+    const apiUrl = `localhost:5000/weather?lat=${lat}&lon=${lng}`;
     
     try {
         const response = await fetch(apiUrl);
@@ -519,7 +519,7 @@ function stationDetail(station) {
     // Get hourly forecast data and display charts
     setTimeout(() => {
         // Fetch forecast data from backend
-        fetch(`http://127.0.0.1:5000/predict/${station.number}`)
+        fetch(`localhost:5000/predict/${station.number}`)
             .then(response => response.json())
             .then(data => {
                 // Prepare chart data
