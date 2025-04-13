@@ -243,7 +243,10 @@ function showGroupMarkers(map) {
 // Making initMap globally accessible
 window.initMap = initMap;
 
-// Function to fetch station data
+/**
+ * Function to fetch station data
+ * fetches station information from JCDecaux API
+  */ 
 let stations = [];
 async function fetchStationInfo() {
     try {
@@ -341,7 +344,10 @@ function addGroupMarkers(map, groupedStationsWithTotalsAndAverages) {
     });
 }
 
-// Function to fetch bike availability
+/**
+ * Function to fetch bike availability
+ * Fetches the dynamic bike station data from JCDecaux
+ * finds the station ID and extracts the available bikes and parking */ 
 async function fetchAvailability() {
     try {
         const response = await fetch("https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey=eeb44b00e16a123704765d0077479e41fe503728");
@@ -362,7 +368,9 @@ async function fetchAvailability() {
     }
 }
 
-// Array to store markers
+/**
+ * Array to store markers
+ */
 let markers = [];
 
 // Function to place markers
@@ -400,7 +408,10 @@ function placeMarkers(map) {
         // Store markers in the array
         markers.push(circleMarker, bikeMarker);
 
-        // Show availability when hovering over the station
+        /**
+         * Create Info box when hovering over the station to show availability
+         * create InfoWindow with html elements
+         *  */ 
         const infoWindow = new google.maps.InfoWindow({
             content: `<div class="info-box">
                 <h3>${station.name}</h3>
@@ -413,7 +424,11 @@ function placeMarkers(map) {
             disableAutoPan: true
         });
 
-        // Add hover to show the info box
+        /**
+         * Add hover to show the info box
+         * show info-box when going over station
+         * close info-box when mouseout
+         * when station is clicked show stationDetail() */ 
         bikeMarker.addListener('mouseover', () => infoWindow.open(map, bikeMarker));
         bikeMarker.addListener('mouseout', () => infoWindow.close());
         bikeMarker.addListener('click', () => {
@@ -439,7 +454,12 @@ function showMarkers(map) {
     groupMarkers.forEach(marker => marker.setMap(map)); // Show group markers
 }
 
-// Function to display bike icon based on availability
+/** 
+ *  Function to display bike icon based on availability
+ * < 5 bikes available => show red icon
+ * between 5 & 10 => show orange icon
+ * else show green bike icon
+*/
 function getBikeIcon(availableBikes) {
     if (availableBikes < 5) {
         return "../static/Media/bikeRed.png";
@@ -450,8 +470,14 @@ function getBikeIcon(availableBikes) {
     }
 }
 
-// Modify stationDetail function to display hourly forecast charts
-
+/**
+ * StationDetail function to show detailed information 
+ * creates sidebar
+ * closes favorites sidebar when user tries to click on a station
+ * checks if station is already marked as favorite station
+ * Displays station details 
+ * displays hourly forecast charts for bikes and parking
+ * */ 
 function stationDetail(station) {
     let stationSidebar = document.getElementById("station-detail");
     // Create sidebar if it doesn't exist
@@ -606,7 +632,10 @@ function stationDetail(station) {
 //to store the favorite stations
 const favorites = [];
 
-// Function to change favorite button to starFilled.png and add station to a list 
+/** 
+ * Function for favorites feature
+ * change favorite button to starFilled.png and add station to a list 
+ * */ 
 function favoriteStation(station, buttonElement){
     if (!favorites.some(fav => fav.number === station.number)) {
         favorites.push(station);
@@ -618,7 +647,12 @@ function favoriteStation(station, buttonElement){
     }
 }
 
-// display list once menu option is clicked
+/** 
+ * Display favorite list once menu option 'favorite station' is clicked
+ * shows the favorite list as a sidebar once menu option is clicked
+ * display the marked favorite stations elements
+ * when hover over each station element show station info-box
+ * */ 
 window.addEventListener("DOMContentLoaded", () => {
 document.getElementById("menu-bar").addEventListener("click", () =>{
     let favoriteSidebar = document.getElementById("favorite-list");
