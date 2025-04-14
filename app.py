@@ -12,10 +12,10 @@ CORS(app)
 
 load_dotenv()
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
-API_KEY = os.getenv("API_KEY")
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 CITY = "Dublin"
 COUNTRY_CODE = "IE"
-URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&appid={API_KEY}&units=metric"
+URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&appid={WEATHER_API_KEY}&units=metric"
 
 # Ensure both models are loaded correctly
 bike_model = pickle.load(open('bike_availability_model_v1.pkl', 'rb'))
@@ -74,7 +74,7 @@ def predict_hourly(station_id):
 # Functions for the prediction
 def get_weather_forecast():
     '''Returns fixed weather data'''
-    response = requests.get(f"http://api.openweathermap.org/data/2.5/weather?q=Dublin&appid={API_KEY}&units=metric")
+    response = requests.get(f"http://api.openweathermap.org/data/2.5/weather?q=Dublin&appid={WEATHER_API_KEY}&units=metric")
     if response.status_code == 200:
         data = response.json()
         return {
@@ -86,7 +86,7 @@ def get_weather_forecast():
 
 def get_formatted_weather(city=CITY, country_code=COUNTRY_CODE):
     """Get weather data and format it for frontend display"""
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city},{country_code}&appid={API_KEY}&units=metric"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city},{country_code}&appid={WEATHER_API_KEY}&units=metric"
     response = requests.get(url)
     
     if response.status_code == 200:
@@ -207,7 +207,7 @@ def search_weather():
         city = location.strip()
         country = COUNTRY_CODE
     
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city},{country}&appid={API_KEY}&units=metric"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city},{country}&appid={WEATHER_API_KEY}&units=metric"
     
     response = requests.get(url)
     

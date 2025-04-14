@@ -2,15 +2,19 @@ import unittest
 import requests
 import json
 from unittest.mock import patch, Mock
+import os
+from dotenv import load_dotenv
 
+
+load_dotenv()
 JCKEY = "eeb44b00e16a123704765d0077479e41fe503728"
 Contract_NAME = "dublin"
 STATIONS_URI = "https://api.jcdecaux.com/vls/v1/stations"
 
 
-API_KEY = "7226a2c4ce82265fde9c8d32f42258ec"
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 CITY = "Dublin"
-URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=metric"
+URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={WEATHER_API_KEY}&units=metric"
 
 #Functions to test API request
 def get_station_info():
