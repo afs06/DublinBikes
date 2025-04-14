@@ -5,11 +5,13 @@ import os
 import pickle
 import numpy as np
 import datetime
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)
 
-API_KEY = "7226a2c4ce82265fde9c8d32f42258ec"
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 CITY = "Dublin"
 COUNTRY_CODE = "IE"
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY},{COUNTRY_CODE}&appid={API_KEY}&units=metric"
