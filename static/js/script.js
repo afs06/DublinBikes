@@ -250,7 +250,7 @@ window.initMap = initMap;
 let stations = [];
 async function fetchStationInfo() {
     try {
-        const response = await fetch("https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey=eeb44b00e16a123704765d0077479e41fe503728");
+        const response = await fetch("/stations");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
 
@@ -350,7 +350,7 @@ function addGroupMarkers(map, groupedStationsWithTotalsAndAverages) {
  * finds the station ID and extracts the available bikes and parking */ 
 async function fetchAvailability() {
     try {
-        const response = await fetch("https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey=eeb44b00e16a123704765d0077479e41fe503728");
+        const response = await fetch("/availability");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
 
@@ -361,10 +361,10 @@ async function fetchAvailability() {
                 station.available_parking = availability.available_bike_stands;
             }
         });
-        
-        console.log("Stations data:", stations);
+
+        console.log("Stations with availability:", stations);
     } catch (error) {
-        console.error("Error fetching station data:", error);
+        console.error("Error fetching station availability:", error);
     }
 }
 

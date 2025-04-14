@@ -123,15 +123,56 @@ def home():
 
 @app.route("/homepage")
 def homepage():
+    '''Navigate to the homepage'''
     return render_template("homepage.html")
 
-@app.route("/help")
-def help_page():
-    return render_template("help.html")
+@app.route("/stations", methods=["GET"])
+def get_bike_stations():
+    '''fetches bike static bike station information from JCDecaux'''
+    try:
+        jcdecaux_api_key = os.getenv("BIKE_KEY")
+        url = f"https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey={jcdecaux_api_key}"
+        response = requests.get(url)
 
-# Basic weather route (returns raw OpenWeatherMap data)
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({"error": "Failed to fetch station data"}), 500
+
+    except Exception as e:
+        print(f"Error fetching JCDecaux data: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/availability", methods=["GET"])
+def get_station_availability():
+    '''Fetches the availability for a specific station'''
+    try:
+        jcdecaux_api_key = os.getenv("BIKE_KEY")
+        url = f"https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey={jcdecaux_api_key}"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            stations = response.json()
+            availability_data = [
+                {
+                    "number": s["number"],
+                    "available_bikes": s["available_bikes"],
+                    "available_bike_stands": s["available_bike_stands"]
+                }
+                for s in stations
+            ]
+            return jsonify(availability_data)
+        else:
+            return jsonify({"error": "Failed to fetch availability data"}), 500
+
+    except Exception as e:
+        print(f"Error fetching availability data: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route("/weather", methods=["GET"])
 def get_weather():
+    '''Basic weather route (returns raw OpenWeatherMap data)'''
     response = requests.get(URL)
     if response.status_code == 200:
         return jsonify(response.json())
