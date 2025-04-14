@@ -9,6 +9,7 @@ import traceback
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 
+load_dotenv()
 JCKEY = os.getenv("BIKE_KEY")
 Contract_NAME = "dublin"
 STATIONS_URI = "https://api.jcdecaux.com/vls/v1/stations"
