@@ -11,6 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 load_dotenv()
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 API_KEY = os.getenv("API_KEY")
 CITY = "Dublin"
 COUNTRY_CODE = "IE"
@@ -73,7 +74,7 @@ def predict_hourly(station_id):
 # Functions for the prediction
 def get_weather_forecast():
     '''Returns fixed weather data'''
-    response = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Dublin&appid=7226a2c4ce82265fde9c8d32f42258ec&units=metric")
+    response = requests.get(f"http://api.openweathermap.org/data/2.5/weather?q=Dublin&appid={API_KEY}&units=metric")
     if response.status_code == 200:
         data = response.json()
         return {
@@ -118,7 +119,7 @@ def media_files(filename):
 # Main routes
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html", google_maps_key=GOOGLE_MAPS_API_KEY)
 
 @app.route("/homepage")
 def homepage():
