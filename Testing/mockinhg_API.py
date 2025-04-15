@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-JCKEY = "eeb44b00e16a123704765d0077479e41fe503728"
+JCKEY = os.getenv("BIKE_KEY")
 Contract_NAME = "dublin"
 STATIONS_URI = "https://api.jcdecaux.com/vls/v1/stations"
 

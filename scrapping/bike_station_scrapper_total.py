@@ -22,9 +22,8 @@ data = json.loads(r.text)
 
 #print(json.dumps(data, indent=4))
 
-#Downloading + Save Json data to a file
 def write_to_file(text):
-   
+    '''Creates a folder and saves the fetched data in this folder'''
     # create folder in directory    
     if not os.path.exists('data'):
         os.mkdir('data')
@@ -32,8 +31,6 @@ def write_to_file(text):
     else:
         print("Folder 'data' already exists.")
 
-    # now is a variable from datetime, which will go in {}.
-    # replace is replacing white spaces with underscores in the file names
     now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"data/bikes_{now}.json"
     with open(filename, "w") as f:
@@ -42,6 +39,7 @@ def write_to_file(text):
 
 # extract station details
 def stations_to_db(text):
+    '''extracts the stations from a json file'''
     #load the stations from the text received from jcdecaux
     stations = json.loads(text)
 
@@ -67,7 +65,7 @@ def stations_to_db(text):
         print(vals)
 
 #----connect to the database ----
-USER = "root" #add the according root from Joy
+USER = "root" 
 PASSWORD = "...."
 PORT = "3306"
 DB = "local_databasejcdecaux"
@@ -114,6 +112,7 @@ engine.execute(sql_availability)
 
 #insert station data into database
 def insert_station_data(station):
+    '''Connects to SQL DB and inserts the station data'''
     sql = """
     INSERT INTO station (number, address, banking, bike_stands, name, position_lat, position_lng)
     VALUES (%s, %s, %s, %s, %s, %s, %s)
@@ -137,6 +136,7 @@ def insert_station_data(station):
         conn.execute(sql, values)
 
 def insert_availability_data(station):
+    '''Connects to SQL DB and inserts the availability data'''
     sql = """
     INSERT INTO availability (number, available_bikes, available_bike_stands, last_update)
     VALUES (%s, %s, %s, %s);
@@ -152,8 +152,8 @@ def insert_availability_data(station):
     with engine.connect() as conn:
         conn.execute(sql, values)
 
-#Function to collect station  & availability data every 5 minutes into database
 def main():
+    '''Function to collect station  & availability data every 5 minutes into database'''
     while True:
         try:
             r = requests.get(STATIONS_URI, params={"apiKey": JCKEY, "contract": Contract_NAME})
@@ -170,8 +170,9 @@ def main():
         except: #if errors print traceback
             print(traceback.format_exc())
 
-#Function to extract bike station data every 5min   
+
 def station_data_frequently():
+    '''Function to only extract bike station data every 5min   '''
     while True:
         try:
             r = requests.get(STATIONS_URI, params={"apiKey": JCKEY, "contract": Contract_NAME})
