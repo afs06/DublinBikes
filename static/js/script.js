@@ -85,7 +85,11 @@ async function addWeatherClickListener(map) {
         await fetchWeather(lat, lng);
     });
 }
-
+/**
+ * For Map initialization, default UI is mostly disabled, as we are creating custom UI so that we can control how user interacts with map fully
+ * Furthermore restricts user control of map outside of desired interactions (i.e. accessing street-view etc.)
+ * This is in tandem with our project's goal of simplification for better user experience in directly sourcing and viewing bikes (As stated in our report)
+ */
 // Initialize and add the map
 async function initMap() {
     // The location of Dublin
@@ -126,7 +130,11 @@ async function initMap() {
 document.addEventListener('DOMContentLoaded', () => {
     fetchWeather(53.3498, -6.2603);  // Default: display Dublin's weather
 });
-
+/**
+ * This function is used for the location search bar, it makes use of google Autocomplete to allow for location predictions for user
+ * uses bindTo to bias locations within map for more accurate location suggestions for user
+ * Also contains error or unexpected user input handling, such as hiding group markers if use searches for a location while in zoomed out view (group view)
+ */
 function initSearch(map) {
     // Fetching search input element 
     const input = document.getElementById("search1");
@@ -177,7 +185,11 @@ function initSearch(map) {
         }
     });
 }
-
+/**
+ * Both buttons are returned via the createZoomMagControl and createMagControl below this code section
+ * the returned buttons are used here to dynamically create both buttons within map
+ * This makes it easier to control custom button creation and map generation
+ */
 // Function to add magnification controls
 function addMagnificationControls(map) {
     // Creating a container for both buttons
@@ -197,7 +209,10 @@ function addMagnificationControls(map) {
     // Adding the container to the map
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(magControlDiv);
 }
-
+/**
+ * This creates the default magnification button, which also shows station markers, and hides group markers on click ( in case zoom out was previously used)
+ * Button is dynamically added to map using addMagnificationControls
+ */
 // Function to create the first magnification button (zoomed in)
 function createMagControl(map) {
     const magButton = document.createElement("button");
@@ -213,7 +228,10 @@ function createMagControl(map) {
 
     return magButton;
 }
-
+/**
+ * This creates the zoom out magnification button, which also shows group markers, and hides station markers on click
+ * Button is dynamically added to map using addMagnificationControls
+ */
 // Function to create the second magnification button (zoomed out)
 function createZoomMagControl(map) {
     const zoomMagButton = document.createElement("button");
@@ -229,7 +247,10 @@ function createZoomMagControl(map) {
 
     return zoomMagButton;
 }
-
+/**
+ * The following code is used to hide group markers, similar code is made later for station markers
+ * Works by simply setting them to null foreach contained within groupMarkers, and show is opposite of this 
+ */
 // Function to hide group markers
 function hideGroupMarkers() {
     groupMarkers.forEach(marker => marker.setMap(null));
@@ -267,8 +288,11 @@ async function fetchStationInfo() {
         console.error("Error fetching station data:", error);
     }
 }
-
-// Testing group markers
+/**
+ * Sorts stations by latitude and longitude, as there are 115 stations divide stations into groups of 20
+ * for each group average latitude and longitude is found, and total bikes of all stations is added together 
+ */
+// Function to group stations for group markers
 function groupStations(stations) {
     // Sorting by Lat and Long
     stations.sort((a, b) => {
@@ -307,7 +331,11 @@ function groupStations(stations) {
 
     return groupedStationsWithTotalsAndAverages;
 }
-
+/**
+ * Creating group markers which show available bikes in relative geographic locations
+ * Each group marker uses previous groupedStationsWithTotalsAndAverages to define values which will be shown
+ * forEach group, display total bikes and use average latitude and longitude of group for location of marker
+ */
 // Array to store group markers
 let groupMarkers = [];
 
@@ -375,6 +403,9 @@ let markers = [];
 
 // Function to place markers
 function placeMarkers(map) {
+    /**
+     * Using station lat and longitude to define marker position
+     */
     for (const station of stations) {
         const position = { lat: station.latitude, lng: station.longitude };
         
@@ -441,8 +472,12 @@ function placeMarkers(map) {
             });
     }
 }
-
-// Function to hide markers
+/**
+ * Functions for show and hide station markers
+ * Used to change which markers are visible depending on magnification tool used
+ * Also used in location search to make sure station markers, and not group markers, are visible on successful search 
+ */
+// Function to hide markers 
 function hideMarkers() {
     markers.forEach(marker => marker.setMap(null)); // Hide station markers
     groupMarkers.forEach(marker => marker.setMap(null)); // Hide group markers

@@ -8,7 +8,7 @@ body {
      height: 5vmin;
      object-fit: contain;
  }
- 
+ /* Styling for DublinBikes name in header*/
  .title {
      color: rgba(0, 121, 252, 0.897);
      font-weight: 300;
@@ -18,12 +18,14 @@ body {
      margin: 0; 
      padding-bottom: 0.1em
  }
- 
+ /* using Anuphan as custom font for page, as it suits design rationale i.e. fun and modern */
  html, body{
      font-family: 'Anuphan', sans-serif;
  }
  
- 
+ /* Styling for header bar, semi transparent as Map is full size of page, so map can be partially visible
+ through it as an aesthetic choice
+ Uses z-index to float at highest point (3)*/
  h1 {
      display: flex;
      align-items: flex-end;
@@ -37,14 +39,14 @@ body {
      z-index: 3; 
      border-bottom: 1px solid rgba(0, 121, 252, 0.5); /* Semi-transparent */
  }
- 
+ /* Styling for the bike logo itself*/
  #bike{
      padding-left: 3vmin;
      margin-bottom: 1vmin;
  
  }
  
- 
+ /* Following code is for styling of the dynamically generated zoom controls in map*/
  button.zoomMag {
      bottom: 2vmin;  
      right: 3vmin; 
@@ -72,7 +74,8 @@ body {
  }
  
  
- 
+ /* Sidebar styling, also semi-transparent like h1
+ Uses z-index to float above map, but below h1, although they should not overlap regardless due to sizing*/
  #sidebar {
      position: fixed;
      top: 8vmin; /* Below header */
@@ -89,7 +92,7 @@ body {
      padding: 2vmin 0;
      box-sizing: border-box;
  }
- 
+ /* Code (!important) makes sure that map styling is not overridden by any other styling, as map has to be at back of page with z-index 1, and also full width of screen*/
  #map {
      position: fixed !important;
      top: 0 !important;
@@ -101,7 +104,7 @@ body {
      display: block !important;
      visibility: visible !important;
  }
- 
+ /* This is for the location search input within sidebar */
  #search1 {
      border: 1px solid;
      color: rgba(0, 121, 252, 0.897);
@@ -117,37 +120,7 @@ body {
      padding: 0 1vmin;
      box-sizing: border-box;
  }
- 
- #book {
-     background-color: rgba(0, 121, 252, 0.897);
-     font-family: 'Anuphan', sans-serif;
-     font-size: 3vmin;
-     border-radius: 5px;
-     color: aliceblue;
-     border: transparent;
-     margin-top: 3vmin;
-     cursor: pointer;
-     width: 15vmin;
-     height: 5vmin;
-     white-space: nowrap;
-     text-overflow: clip;
- 
- }
- 
- /* #login {
-     background-color: rgba(0, 121, 252, 0.897);
-     font-family: 'Anuphan', sans-serif;
-     font-size: 3vmin;
-     border-radius: 5px;
-     color: aliceblue;
-     border: transparent;
-     cursor: pointer;
-     width: 15vmin;
-     height: 5vmin;
-     position: absolute;
-     top: 3vmin;
-     right: 1vmin;
- } */
+  
  
  .home-link {
      font-weight: 300;
@@ -162,7 +135,7 @@ body {
  .home-link:hover {
      text-decoration: underline;
  }
- 
+ /* Weather container within sidebar, where weather info is displayed*/
  #weather-container {
      width: 80%;
      max-width: 300px;
@@ -233,14 +206,7 @@ body {
      display: none !important;
  }
  
- /* Can be removed since favorite button was also removed in the info box
- .favorite-button{
-     width: 35px;
-     height:35px;
-     position: absolute;
-     top: 25%;
-     margin-left: 5px;
- } */
+
  
  .station-info {
      display: flex;
@@ -261,7 +227,6 @@ body {
  .bike-icon {
      width: 30px;
      height: 30px;
-     /* margin-right: 8px; */
      margin-left: 5px;
  }
  
@@ -281,7 +246,7 @@ body {
      border: 1px solid;
      top: 8vmin;
      left: 0; /* Position of the sidebar */
-     width: 20%; /* Try 25% */
+     width: 20%; 
      height: calc(100vh - 8vmin);
      border-left: 3px;
      padding: 4vmin;
@@ -384,7 +349,7 @@ body {
      margin-left: 20px;
  }
  
- /* Add to stylesheet.css */
+
  .predictions-container {
      display: flex;
      flex-direction: column;
