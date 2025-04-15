@@ -178,9 +178,10 @@ def get_weather():
         return jsonify(response.json())
     return jsonify({"error": "Unable to retrieve weather data"}), 500
 
-# Enhanced weather route with formatted data for frontend display
+
 @app.route("/weather/formatted", methods=["GET"])
 def get_formatted_weather_route():
+    ''' Enhanced weather route with formatted data for frontend display'''
     city = request.args.get("city", CITY)
     country = request.args.get("country", COUNTRY_CODE)
     
@@ -193,6 +194,7 @@ def get_formatted_weather_route():
 # Weather search route - allows searching for weather by location
 @app.route("/weather/search", methods=["GET"])
 def search_weather():
+    '''weather search route - returns weather when location is entered'''
     location = request.args.get("location", "")
     
     if not location:
@@ -224,6 +226,7 @@ dock_model = pickle.load(open('bike_docks_model_v1.pkl', 'rb'))
 # Defining route for predictions
 @app.route("/predict", methods=["GET"])
 def predict():
+    '''Predcition route for ML models'''
     try:
         station_id = request.args.get("station_id")
         if not station_id:
