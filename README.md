@@ -75,3 +75,4 @@ To test Flask pathways, and receive a report txt file on it, use the following:
 python -m pytest Testing/test_app.py -v -s > flask_test_results.txt
 ```
 ## 📜 License
+This project is licensed under the GPL-3.0 license - see the LICENSE file.
