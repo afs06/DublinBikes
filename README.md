@@ -51,7 +51,7 @@ npm install
 ```
 
 ## 💻 Accessing 
-The following is necessary for the app to function.
+The following is necessary for the app to function
 ## 🔐 Setup API Keys
 Create a .env file in the project root directory, with the following:
 ```ini
