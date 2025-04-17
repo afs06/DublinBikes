@@ -8,7 +8,7 @@ COMP30380: SW Engineering Group 13 Project
 - [🚀 How to get started](#-how-to-get-started)
   - [🔧 Requirements](#-requirements)
   - [💻 Accessing](#-accessing)
-  - [🔐 Setup API Key](#-setup-api-key)
+  - [🔐 Setup API Keys](#-setup-api-keys)
 - [🧪 Testing](#-testing)
 - [📜 License](#-license)
 
@@ -52,8 +52,14 @@ npm install
 
 ## 💻 Accessing 
 The following is necessary for the app to function.
-## 🔐 Setup API Key
-This project uses the OpenWeatherMap API, JCDecaux API and Google Maps API. Keys have been stored within a .env file, for website to function API keys must be requested for local usage.
+## 🔐 Setup API Keys
+Create a .env file in the project root directory, with the following:
+```ini
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+BIKE_KEY=your_jcdecaux_api_key
+WEATHER_API_KEY=your_openweather_api_key
+DEBUG=True
+```
 
 With API keys active, the following steps can be undertaken:
 
